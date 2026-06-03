@@ -1,0 +1,500 @@
+/* VARIABLES CON TUS COLORES PASTEL EXCLUSIVOS */
+:root {
+    --azul-cielo: #f6fcff;
+    --verde-menta: #E6F4EA;
+    --lavanda: #c4d4ec;
+    --amarillo-suave: #FEF9E7;
+    
+    /* Versiones un tris más fuertes para textos, contrastes y sombras modernas */
+    --texto: #2C3E50;
+    --lavanda-fuerte: #583c7c;
+    --azul-fuerte: #3A86C8;
+    --verde-fuerte: #457750;
+    --amarillo-fuerte: #D4AC0D;
+}
+
+/* RESET GENERAL CON ESTILO INTERESANTE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', 'Fredoka One', 'Segoe UI', sans-serif;
+    color: var(--texto);
+}
+
+body {
+    /* FONDO CON DEGRADADO PASTEL FLUIDO */
+    background: linear-gradient(135deg, var(--azul-cielo), var(--lavanda), var(--verde-menta), var(--amarillo-suave));
+    background-size: 400% 400%;
+    animation: gradientBG 18s ease infinite;
+    min-height: 100vh;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* MARQUESINA ADORABLE */
+.marquesina-contenedor {
+    background-color: var(--amarillo-suave);
+    border-bottom: 4px dashed var(--lavanda-fuerte);
+    padding: 12px 0;
+    overflow: hidden;
+}
+
+.marquesina-texto {
+    display: inline-block;
+    white-space: nowrap;
+    font-weight: bold;
+    font-size: 1.05rem;
+    color: var(--lavanda-fuerte);
+    animation: moverMarquesina 25s linear infinite;
+}
+
+@keyframes moverMarquesina {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* ENCABEZADO VIDRIO ESMERILADO (MODERNO) */
+header {
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 3px solid var(--lavanda);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 6%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-animado {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--lavanda-fuerte);
+    text-shadow: 2px 2px 0px white;
+}
+
+.heart {
+    display: inline-block;
+    animation: latido 1.2s infinite;
+}
+
+@keyframes latido {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-link {
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 18px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.nav-link.activo, .nav-link:hover {
+    background-color: var(--lavanda);
+    color: var(--lavanda-fuerte);
+    box-shadow: 0 4px 0px var(--lavanda-fuerte);
+}
+
+.btn-nav-donar {
+    background-color: var(--amarillo-suave);
+    border: 2px solid var(--amarillo-fuerte);
+    box-shadow: 0 4px 0px var(--amarillo-fuerte);
+}
+
+/* HERO SECTION */
+.hero-section {
+    padding: 60px 6% 40px 6%;
+    text-align: center;
+}
+
+.badge-alerta {
+    background-color: white;
+    color: var(--lavanda-fuerte);
+    padding: 8px 22px;
+    border-radius: 50px;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 25px;
+    border: 2px solid var(--lavanda-fuerte);
+    box-shadow: 0 4px 10px rgba(125, 102, 217, 0.1);
+}
+
+.hero-section h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 0px white;
+}
+
+.hero-section p {
+    font-size: 1.25rem;
+    max-width: 750px;
+    margin: 0 auto 40px auto;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+/* BUSCADOR POP UP */
+.buscador-magico {
+    background: white;
+    border: 3.5px solid var(--lavanda-fuerte);
+    border-radius: 24px;
+    padding: 25px 35px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 15px 35px rgba(125, 102, 217, 0.15);
+}
+
+.input-grupo {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.input-grupo label {
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    color: var(--lavanda-fuerte);
+    text-transform: uppercase;
+}
+
+.buscador-magico select {
+    padding: 12px 20px;
+    border-radius: 14px;
+    border: 2px solid var(--lavanda);
+    background-color: var(--amarillo-suave);
+    font-size: 1rem;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.buscador-magico select:focus {
+    border-color: var(--lavanda-fuerte);
+}
+
+.btn-buscar-glow {
+    background-color: var(--lavanda-fuerte);
+    color: white;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 0px #5a44b5;
+    transition: all 0.2s;
+}
+
+.btn-buscar-glow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 0px #5a44b5, 0 8px 20px rgba(125, 102, 217, 0.3);
+}
+
+/* SECCIÓN CALENDARIO */
+.seccion-calendario {
+    padding: 30px 6%;
+    display: flex;
+    justify-content: center;
+}
+
+.tarjeta-calendario {
+    background-color: var(--azul-cielo);
+    border: 3px solid var(--azul-fuerte);
+    border-radius: 24px;
+    padding: 25px;
+    max-width: 750px;
+    width: 100%;
+    box-shadow: 0 8px 0 var(--azul-fuerte);
+}
+
+.tarjeta-calendario h3 {
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.eventos-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.evento-item {
+    background: rgba(255, 255, 255, 0.75);
+    padding: 15px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.fecha {
+    background-color: var(--azul-fuerte);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* GALERÍA DE TARJETAS MODERNA (CERO BLANCO MALUCO) */
+.seccion-mascotas {
+    padding: 60px 6%;
+    text-align: center;
+}
+
+.titulo-decorado h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.subtitulo {
+    font-size: 1.1rem;
+    margin-bottom: 50px;
+    font-weight: 500;
+    opacity: 0.85;
+}
+
+.grid-mascotas {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.tarjeta-peludito {
+    border-radius: 28px;
+    width: 330px;
+    position: relative;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Riqueza de color por tarjeta con súper sombras premium */
+.card-lavanda {
+    background-color: var(--lavanda);
+    border: 4.5px solid var(--lavanda-fuerte);
+    box-shadow: 0 12px 0 var(--lavanda-fuerte);
+}
+
+.card-menta {
+    background-color: var(--verde-menta);
+    border: 4.5px solid var(--verde-fuerte);
+    box-shadow: 0 12px 0 var(--verde-fuerte);
+}
+
+.tarjeta-peludito:hover {
+    transform: translateY(-8px) rotate(1deg);
+}
+
+.badge-adopcion {
+    position: absolute;
+    top: -15px;
+    right: 20px;
+    background-color: white;
+    border: 2px solid var(--texto);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    transform: rotate(4deg);
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+}
+
+.contenedor-foto {
+    height: 230px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px dashed rgba(0,0,0,0.08);
+}
+
+/* Fotos estéticas reales integradas de fondo */
+.img-luna {
+    background: url('https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=400') center/cover;
+}
+
+.img-rocco {
+    background: url('https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=400') center/cover;
+}
+
+/* Animación de respaldo si el internet falla */
+.avatar-pet-dog, .avatar-pet-cat {
+    font-size: 5rem;
+    display: none; /* Oculto por defecto ya que cargará la foto real */
+}
+
+.cuerpo-tarjeta {
+    text-align: left;
+}
+
+.encabezado-tarjeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.cuerpo-tarjeta h3 {
+    font-size: 1.6rem;
+    font-weight: 800;
+}
+
+.tag-propiedad {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.color-amarillo { background-color: var(--amarillo-suave); border: 2px solid var(--amarillo-fuerte); }
+.color-azul { background-color: var(--azul-cielo); border: 2px solid var(--azul-fuerte); }
+
+.detalles {
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    line-height: 1.45;
+    opacity: 0.9;
+}
+
+.fundacion-info {
+    font-size: 0.9rem;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 10px;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+.btn-tarjeta-contacto {
+    width: 100%;
+    padding: 12px;
+    border-radius: 16px;
+    border: none;
+    background-color: white;
+    font-weight: 900;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+    transition: all 0.2s;
+}
+
+.card-lavanda .btn-tarjeta-contacto { border: 2.5px solid var(--lavanda-fuerte); color: var(--lavanda-fuerte); }
+.card-menta .btn-tarjeta-contacto { border: 2.5px solid var(--verde-fuerte); color: var(--verde-fuerte); }
+
+.btn-tarjeta-contacto:hover {
+    background-color: var(--texto);
+    color: white !important;
+    transform: scale(1.02);
+}
+
+/* SECCIÓN DONACIONES EXPLOSIVA Y LIMPIA */
+.seccion-donaciones {
+    padding: 40px 6% 80px 6%;
+    display: flex;
+    justify-content: center;
+}
+
+.tarjeta-donaciones-completa {
+    background-color: var(--amarillo-suave);
+    border: 4px solid var(--amarillo-fuerte);
+    border-radius: 32px;
+    padding: 40px;
+    max-width: 750px;
+    text-align: center;
+    box-shadow: 0 12px 0 var(--amarillo-fuerte);
+}
+
+.tarjeta-donaciones-completa h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.tarjeta-donaciones-completa p {
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.nequi-caja-destacada {
+    background-color: white;
+    border-radius: 24px;
+    padding: 30px;
+    border: 3px dashed var(--lavanda-fuerte);
+}
+
+.nequi-caja-destacada h3 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.qr-grafico {
+    background-color: #E0F2FE;
+    width: 160px;
+    height: 160px;
+    margin: 22px auto;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 4px solid var(--azul-fuerte);
+    box-shadow: 0 0 20px rgba(58, 134, 200, 0.2);
+}
+
+.qr-interior {
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: var(--azul-fuerte);
+}
+
+.alerta-nequi {
+    font-size: 0.85rem;
+    color: var(--lavanda-fuerte) !important;
+    font-weight: 700;
+}
+
+/* FOOTER EXTRA LINDO */
+footer {
+    background-color: var(--lavanda-fuerte);
+    padding: 35px;
+    text-align: center;
+    border-radius: 35px 35px 0 0;
+}
+
+footer p {
+    color: white;
+    font-weight: bold;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+}
