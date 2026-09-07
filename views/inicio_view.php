@@ -4,38 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhiliaPet 🐾 ¡Encuentra tu Amor Peludito!</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
-    <!-- MARQUESINA CHRONICAMENTE ADORABLE -->
+    <!-- MARQUESINA -->
     <div class="marquesina-contenedor">
         <div class="marquesina-texto">
             🐶 ¡ADOPTA, NO COMPRES! • Próxima jornada en C.C. Gran Estación este Sábado 🎉 • Vacunación gratuita con la Fundación Huellas de Amor 🐱 • ¡Ayúdanos a salvar vidas en Bogotá! ❤️ • 
         </div>
     </div>
 
-    <!-- ENCABEZADO CON EFECTO VIDRIO ESMERILADO -->
+    <!-- ENCABEZADO -->
     <header>
         <div class="logo-animado">
             <span>🐾</span> PhiliaPet <span class="heart">❤️</span>
         </div>
         <nav>
-            <a href="#" class="nav-link activo">Inicio</a>
-            <a href="#" class="nav-link">Fundaciones</a>
-            <a href="#" class="nav-link">📅 Calendario</a>
-            <a href="#" class="nav-link btn-nav-donar">🎁 Donar</a>
+            <a href="#inicio" class="nav-link activo">Inicio</a>
+            <a href="index.php?action=catalogo_adopcion" class="nav-link" style="color: #10b981; font-weight: bold;">🐾 Adopta</a>
+            <a href="#mascotas" class="nav-link">Fundaciones</a>
+            <a href="#calendario" class="nav-link">📅 Calendario</a>
+            <a href="#donar" class="nav-link btn-nav-donar">🎁 Donar</a>
+            <a href="index.php?action=registro" class="nav-link">Registrarse</a>
+            <a href="index.php?action=mascotas" class="nav-link" style="color: #4c1d95; font-weight: bold;">⚙️ Admin</a>
         </nav>
     </header>
 
-    <!-- HERO SECTION - AQUÍ TE ENAMORAS -->
-    <section class="hero-section">
+    <!-- HERO SECTION -->
+    <section id="inicio" class="hero-section">
         <div class="hero-contenido">
             <span class="badge-alerta">✨ Red de Apoyo de Bogotá ✨</span>
             <h1>¡Cambia una vida y llena la tuya de puro amor! 🐶🐱</h1>
             <p>Conectamos y validamos las fundaciones más lindas de la ciudad para que adoptes de forma 100% segura. ¡Tu nuevo mejor amigo te está esperando!</p>
             
-            <!-- BUSCADOR ULTRA LLAMATIVO -->
             <div class="buscador-magico">
                 <div class="input-grupo">
                     <label>¿Qué buscas?</label>
@@ -58,8 +60,8 @@
         </div>
     </section>
 
-    <!-- SECCIÓN CALENDARIO -->
-    <section class="seccion-calendario">
+    <!-- SECCIÓN CALENDARIO ORGANIZADO -->
+    <section id="calendario" class="seccion-calendario" style="padding: 40px 20px;">
         <div class="tarjeta-calendario">
             <h3>📅 Agenda de Jornadas Informativas</h3>
             <div class="eventos-grid">
@@ -71,63 +73,58 @@
                     <span class="fecha">13 JUN</span>
                     <p><strong>Parque Simón Bolívar:</strong> Jornada masiva de recolección de alimento y cobijas para refugios.</p>
                 </div>
+                <div class="evento-item">
+                    <span class="fecha">20 JUN</span>
+                    <p><strong>C.C. Gran Estación:</strong> Jornada de esterilización y adopción con la Fundación Huellas de Amor.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- GALERÍA DE TARJETAS (CERO BLANCO MALUCO) -->
-    <section class="seccion-mascotas">
+    <!-- GALERÍA DE TARJETAS DE MASCOTAS (VISTA PÚBLICA) -->
+    <section id="mascotas" class="seccion-mascotas">
         <div class="titulo-decorado">
             <h2>Mascotas esperando por ti 🐾</h2>
             <p class="subtitulo">Revisa su edad, estado de salud y habla directo con su fundación por medio de los botones específicos.</p>
         </div>
 
         <div class="grid-mascotas">
-            <!-- Tarjeta 1 (Lavanda) -->
-            <div class="tarjeta-peludito card-lavanda">
-                <span class="badge-adopcion">¡Sana y Lista! ✨</span>
-                <div class="contenedor-foto img-luna">
-                    <!-- Si no carga la imagen de fondo, el emoji rebota estéticamente -->
-                    <div class="avatar-pet-dog">🐶</div>
-                </div>
-                <div class="cuerpo-tarjeta">
-                    <div class="encabezado-tarjeta">
-                        <h3>Luna</h3>
-                        <span class="tag-propiedad color-azul">5 meses</span>
+            <?php foreach ($mascotas as $index => $m): ?>
+                <div class="tarjeta-peludito <?php echo ($index % 2 == 0) ? 'card-lavanda' : 'card-menta'; ?>">
+                    <span class="badge-adopcion"><?php echo htmlspecialchars($m['estado_salud']); ?> ✨</span>
+                    
+                    <!-- IMAGEN REAL EN EL INICIO -->
+                    <div class="contenedor-foto" style="width: 100%; height: 350px; overflow: hidden; background: #f3e8ff; display: flex; align-items: center; justify-content: center;">
+                            <?php if (!empty($m['imagen'])): ?>
+                        <img src="<?php echo htmlspecialchars($m['imagen']); ?>" alt="<?php echo htmlspecialchars($m['nombre']); ?>" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                            <?php else: ?>
+                        <div style="font-size: 3em;">
+                            <?php echo ($m['especie'] == 'gato') ? '🐱' : '🐶'; ?>
+                        </div>
+                            <?php endif; ?>
                     </div>
-                    <p class="detalles">Una cachorrita llena de energía, ideal para familias activas. Súper sociable con otros animales y niños.</p>
-                    <div class="fundacion-info">
-                        <p>🏢 <strong>Fundación:</strong> Patitas Bogotanas</p>
-                        <p>📞 Redes y contacto verificado</p>
-                    </div>
-                    <button class="btn-tarjeta-contacto">Contactar Fundación 🐾</button>
-                </div>
-            </div>
 
-            <!-- Tarjeta 2 (Menta) -->
-            <div class="tarjeta-peludito card-menta">
-                <span class="badge-adopcion">Esterilizado 🐱</span>
-                <div class="contenedor-foto img-rocco">
-                    <div class="avatar-pet-cat">自由</div>
-                </div>
-                <div class="cuerpo-tarjeta">
-                    <div class="encabezado-tarjeta">
-                        <h3>Rocco</h3>
-                        <span class="tag-propiedad color-amarillo">2 años</span>
+                    <div class="cuerpo-tarjeta">
+                        <div class="encabezado-tarjeta">
+                            <h3><?php echo htmlspecialchars($m['nombre']); ?></h3>
+                            <span class="tag-propiedad <?php echo ($m['especie'] == 'gato') ? 'color-amarillo' : 'color-azul'; ?>">
+                                <?php echo htmlspecialchars($m['edad_aproximada']); ?>
+                            </span>
+                        </div>
+                        <p class="detalles"><?php echo htmlspecialchars($m['historia']); ?></p>
+                        <div class="fundacion-info">
+                            <p>🏢 <strong>Fundación:</strong> Huellas & Patitas</p>
+                            <p>📞 Redes y contacto verificado</p>
+                        </div>
+                        <button class="btn-tarjeta-contacto">Contactar Fundación 🐾</button>
                     </div>
-                    <p class="detalles">Tranquilo, rescatado y súper ronroneador. Perfecto y adaptado para vivir en apartamento en Bogotá.</p>
-                    <div class="fundacion-info">
-                        <p>🏢 <strong>Fundación:</strong> Huellas de Amor</p>
-                        <p>📞 Redes y contacto verificado</p>
-                    </div>
-                    <button class="btn-tarjeta-contacto">Contactar Fundación 🐾</button>
                 </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </section>
 
-    <!-- SECCIÓN DONACIONES EXPLOSIVA -->
-    <section class="seccion-donaciones">
+    <!-- SECCIÓN DONACIONES -->
+    <section id="donar">
         <div class="tarjeta-donaciones-completa">
             <h2>Libertad de apoyar con lo que puedas 🎁</h2>
             <p>Las fundaciones independientes no tienen recursos fijos. Desde PhiliaPet puedes apoyarlas directamente con dinero, alimento o cobijas de forma transparente.</p>
@@ -143,7 +140,7 @@
         </div>
     </section>
 
-    <!-- FOOTER EXTRA LINDO -->
+    <!-- FOOTER -->
     <footer>
         <p><strong>PhiliaPet</strong> — Transformando el futuro de los refugios de Bogotá 🐾</p>
         <p>&copy; 2026 Conectando corazones peluditos con total responsabilidad.</p>

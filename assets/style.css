@@ -1,0 +1,484 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap');
+
+:root {
+    --texto-oscuro: #1e1b4b;
+    --morado-principal: #5b21b6;
+    --morado-suave: #e0e7ff;
+    --morado-borde: #4c1d95;
+    --card-lavanda: #ede9fe;
+    --card-menta: #d1fae5;
+    --verde-borde: #047857;
+    --amarillo-badge: #fef08a;
+    --amarillo-donar: #facc15;
+    --blanco: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Fredoka', 'Nunito', sans-serif !important;
+}
+
+body {
+    background: linear-gradient(180deg, #dbeafe 0%, #e0e7ff 35%, #ecfdf5 70%, #f3e8ff 100%);
+    background-attachment: fixed;
+    color: var(--texto-oscuro);
+}
+
+/* MARQUESINA */
+.marquesina-contenedor {
+    background: #fef3c7;
+    color: #78350f;
+    padding: 8px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border-bottom: 2px dashed #f59e0b;
+    width: 100%;
+}
+
+.marquesina-texto {
+    display: inline-block;
+    padding-left: 100%;
+    font-weight: 700;
+    font-size: 0.88rem;
+    animation: scrollMarquesina 22s linear infinite;
+}
+
+@keyframes scrollMarquesina {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
+
+/* ENCABEZADO Y NAVEGACIÓN */
+header {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 60px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-animado {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--morado-borde);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--texto-oscuro);
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+}
+
+nav a.activo, nav a:hover {
+    background: var(--morado-suave);
+    color: var(--morado-borde);
+}
+
+header nav a.btn-registro {
+    background: #e0e7ff !important;
+    color: #4c1d95 !important;
+    font-weight: 700 !important;
+    padding: 8px 16px !important;
+    border-radius: 20px !important;
+    border: 2px solid #c7d2fe !important;
+    transition: all 0.2s ease !important;
+}
+
+header nav a.btn-registro:hover {
+    background: #c7d2fe !important;
+    transform: translateY(-1px);
+}
+
+.btn-nav-donar, nav a.btn-nav-donar {
+    background: var(--blanco);
+    border: 2.5px solid var(--amarillo-donar);
+    color: var(--texto-oscuro) !important;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* HERO SECTION */
+.hero-section {
+    padding: 40px 20px 20px;
+    text-align: center;
+}
+
+.badge-alerta {
+    background: var(--blanco);
+    color: var(--texto-oscuro);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: 2px solid var(--morado-suave);
+    display: inline-block;
+}
+
+.hero-section h1 {
+    font-size: 2.3rem;
+    font-weight: 700;
+    margin: 15px 0 10px;
+    color: var(--texto-oscuro);
+}
+
+.hero-section p {
+    color: #475569;
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* BUSCADOR MAGICO */
+.buscador-magico {
+    background: var(--blanco);
+    max-width: 650px;
+    margin: 25px auto 0;
+    padding: 18px 25px;
+    border-radius: 28px;
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+    border: 3.5px solid var(--morado-borde);
+    box-shadow: 0 12px 25px rgba(91, 33, 182, 0.08);
+}
+
+.input-grupo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.input-grupo label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #475569;
+    text-transform: uppercase;
+}
+
+.input-grupo select {
+    padding: 10px 14px;
+    border-radius: 14px;
+    border: 1.5px solid #cbd5e1;
+    background: #f8fafc;
+    font-weight: 600;
+    color: var(--texto-oscuro);
+    outline: none;
+}
+
+.btn-buscar-glow {
+    background: var(--morado-borde);
+    color: white;
+    border: none;
+    padding: 0 22px;
+    border-radius: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    height: 42px;
+}
+
+/* CALENDARIO Y AGENDA (CENTRADO) */
+.seccion-calendario {
+    max-width: 650px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+
+.tarjeta-calendario {
+    background: var(--blanco);
+    border-radius: 28px;
+    padding: 25px;
+    border: 3.5px solid #38bdf8;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+}
+
+.tarjeta-calendario h3 {
+    margin-bottom: 18px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+.eventos-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.evento-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #f0f9ff;
+    padding: 12px 16px;
+    border-radius: 16px;
+    text-align: left;
+}
+
+.fecha {
+    background: #0284c7;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-align: center;
+    min-width: 65px;
+}
+
+.evento-item p {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #334155;
+}
+
+/* SECCIÓN MASCOTAS */
+.seccion-mascotas {
+    padding: 30px 20px 50px;
+    max-width: 850px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.seccion-mascotas h2 {
+    font-size: 2.1rem;
+    font-weight: 700;
+}
+
+.subtitulo {
+    color: #64748b;
+    font-size: 0.92rem;
+    font-weight: 500;
+    margin: 5px 0 25px;
+}
+
+.grid-mascotas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.tarjeta-peludito {
+    border-radius: 32px;
+    padding: 20px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    text-align: left;
+}
+
+.card-lavanda {
+    background: var(--card-lavanda);
+    border: 4px solid var(--morado-borde);
+}
+
+.card-menta {
+    background: var(--card-menta);
+    border: 4px solid var(--verde-borde);
+}
+
+.badge-adopcion {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--blanco);
+    padding: 4px 16px;
+    border-radius: 15px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border: 2px solid #cbd5e1;
+    white-space: nowrap;
+}
+
+/* MARCOS Y FOTOS */
+.contenedor-foto {
+    width: 100%;
+    height: 200px;
+    border-radius: 20px;
+    background-size: cover;
+    background-position: center;
+    margin-top: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.img-luna {
+    background-image: url('https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=600');
+}
+
+.img-rocco {
+    background-image: url('https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=600');
+}
+
+.cuerpo-tarjeta {
+    padding: 15px 5px 5px;
+}
+
+.encabezado-tarjeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.encabezado-tarjeta h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.tag-propiedad {
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.color-azul { background: var(--blanco); border: 1px solid #cbd5e1; }
+.color-amarillo { background: var(--amarillo-badge); border: 1px solid #fde047; }
+
+.detalles {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #475569;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.fundacion-info {
+    background: rgba(255, 255, 255, 0.75);
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.btn-tarjeta-contacto {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+    border-radius: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    background: var(--blanco);
+}
+
+.card-lavanda .btn-tarjeta-contacto {
+    border: 3.5px solid var(--morado-borde);
+    color: var(--morado-borde);
+}
+
+.card-menta .btn-tarjeta-contacto {
+    border: 3.5px solid var(--verde-borde);
+    color: var(--verde-borde);
+}
+
+/* SECCIÓN DONACIONES Y QR */
+.seccion-donaciones {
+    padding: 20px;
+}
+
+.tarjeta-donaciones-completa {
+    max-width: 650px;
+    margin: 40px auto;
+    background: #fef08a;
+    border-radius: 32px;
+    padding: 30px 25px;
+    border: 4px solid var(--amarillo-donar);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.tarjeta-donaciones-completa h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.tarjeta-donaciones-completa p {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #713f12;
+}
+
+.nequi-caja-destacada {
+    background: var(--blanco);
+    border: 2.5px dashed var(--morado-borde);
+    border-radius: 24px;
+    padding: 25px 20px;
+    margin-top: 20px;
+}
+
+.nequi-caja-destacada h3 {
+    color: var(--morado-borde);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.qr-grafico {
+    width: 140px;
+    height: 140px;
+    background: #e0f2fe;
+    border: 3px solid #0284c7;
+    border-radius: 22px;
+    margin: 18px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 10px rgba(2, 132, 199, 0.12);
+}
+
+.qr-interior {
+    background: #ffffff;
+    border: 2px solid #0284c7;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    color: #0369a1;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.alerta-nequi {
+    font-size: 0.82rem !important;
+    font-weight: 700;
+    color: #475569 !important;
+}
+
+/* FOOTER */
+footer {
+    background: var(--morado-borde);
+    color: white;
+    text-align: center;
+    padding: 25px 20px;
+    margin-top: 60px;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+}
+
+footer p {
+    font-size: 0.88rem;
+    opacity: 0.9;
+}
