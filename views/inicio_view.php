@@ -1,3 +1,9 @@
+<?php
+// Aseguramos que la sesión esté activa para verificar el rol del usuario
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,19 +21,49 @@
         </div>
     </div>
 
-    <!-- ENCABEZADO -->
+    <!-- ENCABEZADO CON CONTROL DINÁMICO DE ROLES -->
     <header>
         <div class="logo-animado">
             <span>🐾</span> PhiliaPet <span class="heart">❤️</span>
         </div>
         <nav>
-            <a href="#inicio" class="nav-link activo">Inicio</a>
-            <a href="index.php?action=catalogo_adopcion" class="nav-link" style="color: #10b981; font-weight: bold;">🐾 Adopta</a>
-            <a href="#mascotas" class="nav-link">Fundaciones</a>
+            <a href="index.php?action=inicio" class="nav-link activo">Inicio</a>
+            <a href="index.php?action=catalogo_adopcion" class="nav-link" style="color: #047857; font-weight: bold;">🐾 Adopta</a>
+            
+            <!-- MENÚ DESPLEGABLE DE FUNDACIONES -->
+            <div class="dropdown-fundaciones">
+                <a href="#mascotas" class="nav-link">Fundaciones ▾</a>
+                <div class="dropdown-content">
+                    <a href="#mascotas">Ver Listado</a>
+                    <a href="index.php?action=unir_refugio" style="color: var(--verde-borde) !important; font-weight: bold;">🐾 Unir mi Refugio</a>
+                </div>
+            </div>
+
             <a href="#calendario" class="nav-link">📅 Calendario</a>
             <a href="#donar" class="nav-link btn-nav-donar">🎁 Donar</a>
-            <a href="index.php?action=registro" class="nav-link">Registrarse</a>
-            <a href="index.php?action=mascotas" class="nav-link" style="color: #4c1d95; font-weight: bold;">⚙️ Admin</a>
+
+            <!-- LÓGICA DE VISIBILIDAD DE BOTONES SEGÚN EL ROL -->
+            <?php if (isset($_SESSION['rol'])): ?>
+                
+                <?php if ($_SESSION['rol'] === 'adoptante'): ?>
+                    <!-- EXCLUSIVO ADOPTANTE: Solo puede ver su Perfil -->
+                    <a href="index.php?action=perfil_adoptante" class="nav-link" style="background: #e0e7ff; color: #4338ca; padding: 6px 14px; border-radius: 12px; font-weight: bold;">
+                        👤 Mi Perfil
+                    </a>
+                <?php elseif ($_SESSION['rol'] === 'refugio' || $_SESSION['rol'] === 'admin'): ?>
+                    <!-- EXCLUSIVO REFUGIO / ADMIN: Acceso al panel de gestión -->
+                    <a href="index.php?action=panel_refugio" class="nav-link" style="color: #4c1d95; font-weight: bold;">
+                        ⚙️ Panel Refugio
+                    </a>
+                <?php endif; ?>
+
+                <a href="index.php?action=logout" class="nav-link" style="color: #ef4444; font-weight: 600;">Cerrar Sesión</a>
+
+            <?php else: ?>
+                <!-- VISITANTES SIN INICIAR SESIÓN -->
+                <a href="index.php?action=registro" class="nav-link">Registrarse</a>
+                <a href="index.php?action=login" class="nav-link" style="color: #0284c7; font-weight: bold;">Ingresar</a>
+            <?php endif; ?>
         </nav>
     </header>
 
@@ -60,7 +96,7 @@
         </div>
     </section>
 
-    <!-- SECCIÓN CALENDARIO ORGANIZADO -->
+    <!-- SECCIÓN CALENDARIO -->
     <section id="calendario" class="seccion-calendario" style="padding: 40px 20px;">
         <div class="tarjeta-calendario">
             <h3>📅 Agenda de Jornadas Informativas</h3>
@@ -81,7 +117,7 @@
         </div>
     </section>
 
-    <!-- GALERÍA DE TARJETAS DE MASCOTAS (VISTA PÚBLICA) -->
+    <!-- GALERÍA DE TARJETAS DE MASCOTAS -->
     <section id="mascotas" class="seccion-mascotas">
         <div class="titulo-decorado">
             <h2>Mascotas esperando por ti 🐾</h2>
@@ -89,42 +125,45 @@
         </div>
 
         <div class="grid-mascotas">
-            <?php foreach ($mascotas as $index => $m): ?>
-                <div class="tarjeta-peludito <?php echo ($index % 2 == 0) ? 'card-lavanda' : 'card-menta'; ?>">
-                    <span class="badge-adopcion"><?php echo htmlspecialchars($m['estado_salud']); ?> ✨</span>
-                    
-                    <!-- IMAGEN REAL EN EL INICIO -->
-                    <div class="contenedor-foto" style="width: 100%; height: 350px; overflow: hidden; background: #f3e8ff; display: flex; align-items: center; justify-content: center;">
+            <?php if (!empty($mascotas)): ?>
+                <?php foreach ($mascotas as $index => $m): ?>
+                    <div class="tarjeta-peludito <?php echo ($index % 2 == 0) ? 'card-lavanda' : 'card-menta'; ?>">
+                        <span class="badge-adopcion"><?php echo htmlspecialchars($m['estado_salud']); ?> ✨</span>
+                        
+                        <div class="contenedor-foto" style="width: 100%; height: 220px; overflow: hidden; background: #f3e8ff; display: flex; align-items: center; justify-content: center; border-radius: 20px;">
                             <?php if (!empty($m['imagen'])): ?>
-                        <img src="<?php echo htmlspecialchars($m['imagen']); ?>" alt="<?php echo htmlspecialchars($m['nombre']); ?>" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                <img src="<?php echo htmlspecialchars($m['imagen']); ?>" alt="<?php echo htmlspecialchars($m['nombre']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
                             <?php else: ?>
-                        <div style="font-size: 3em;">
-                            <?php echo ($m['especie'] == 'gato') ? '🐱' : '🐶'; ?>
-                        </div>
+                                <div style="font-size: 3em;">
+                                    <?php echo ($m['especie'] == 'gato') ? '🐱' : '🐶'; ?>
+                                </div>
                             <?php endif; ?>
-                    </div>
+                        </div>
 
-                    <div class="cuerpo-tarjeta">
-                        <div class="encabezado-tarjeta">
-                            <h3><?php echo htmlspecialchars($m['nombre']); ?></h3>
-                            <span class="tag-propiedad <?php echo ($m['especie'] == 'gato') ? 'color-amarillo' : 'color-azul'; ?>">
-                                <?php echo htmlspecialchars($m['edad_aproximada']); ?>
-                            </span>
+                        <div class="cuerpo-tarjeta">
+                            <div class="encabezado-tarjeta">
+                                <h3><?php echo htmlspecialchars($m['nombre']); ?></h3>
+                                <span class="tag-propiedad <?php echo ($m['especie'] == 'gato') ? 'color-amarillo' : 'color-azul'; ?>">
+                                    <?php echo htmlspecialchars($m['edad_aproximada']); ?>
+                                </span>
+                            </div>
+                            <p class="detalles"><?php echo htmlspecialchars($m['historia']); ?></p>
+                            <div class="fundacion-info">
+                                <p>🏢 <strong>Fundación:</strong> Huellas & Patitas</p>
+                                <p>📞 Redes y contacto verificado</p>
+                            </div>
+                            <a href="index.php?action=detalle_adopcion&id=<?php echo $m['id']; ?>" class="btn-tarjeta-contacto">Contactar Fundación 🐾</a>
                         </div>
-                        <p class="detalles"><?php echo htmlspecialchars($m['historia']); ?></p>
-                        <div class="fundacion-info">
-                            <p>🏢 <strong>Fundación:</strong> Huellas & Patitas</p>
-                            <p>📞 Redes y contacto verificado</p>
-                        </div>
-                        <button class="btn-tarjeta-contacto">Contactar Fundación 🐾</button>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p style="text-align: center; grid-column: 1 / -1; color: #64748b;">No hay mascotas disponibles en este momento. 🐾</p>
+            <?php endif; ?>
         </div>
     </section>
 
     <!-- SECCIÓN DONACIONES -->
-    <section id="donar">
+    <section id="donar" class="seccion-donaciones">
         <div class="tarjeta-donaciones-completa">
             <h2>Libertad de apoyar con lo que puedas 🎁</h2>
             <p>Las fundaciones independientes no tienen recursos fijos. Desde PhiliaPet puedes apoyarlas directamente con dinero, alimento o cobijas de forma transparente.</p>

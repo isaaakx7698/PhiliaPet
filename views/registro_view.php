@@ -177,21 +177,25 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Contraseña</label>
-                        <input type="password" name="password" id="password" placeholder="••••••••" required>
+                        <label for="password">CONTRASEÑA</label>
+                        <input type="password" id="password" name="password" minlength="8" required placeholder="Mínimo 8 caracteres">
+                        <small style="color: #0f172a; font-size: 11px; font-weight: 600;">Debe tener al menos 8 caracteres.</small>
                     </div>
 
+                    <!-- CAMPO DE VERIFICACIÓN PARA REFUGIOS AUTORIZADOS -->
                     <div class="form-group">
-                        <label for="rol">Tipo de cuenta</label>
-                        <select name="rol" id="rol">
-                            <option value="adoptante">Adoptante / Donante</option>
-                            <option value="refugio">Refugio de animales</option>
-                        </select>
+                        <label for="codigo_refugio">Código Secreto (Solo Refugios)</label>
+                        <input type="password" id="codigo_refugio" name="codigo_refugio" placeholder="Opcional: solo si eres un refugio">
+                        <small style="color: #0f172a; font-size: 11px; font-weight: 600;">Si eres adoptante, deja este campo vacío.</small>
                     </div>
                 </div>
 
                 <button type="submit" class="btn-enviar">Registrarse</button>
             </form>
+            
+            <div style="text-align: center; margin-top: 18px;">
+                <a href="index.php?action=login" style="color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.8); font-weight: 700; font-size: 0.88rem; text-decoration: none;">¿Ya tienes cuenta? Inicia sesión aquí</a>
+            </div>
         </div>
 
     </div>
