@@ -1,7 +1,12 @@
 <?php
 
-// se hace la modificacion de 
-// forma temporal
+// // se hace la modificacion de 
+// // forma temporal
+// sdfs
+// disk_free_spacefsd
+// fdatasync
+
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
