@@ -37,7 +37,7 @@ class UsuarioController {
         }
     }
 
-    // Procesa el inicio de sesión
+    // Procesa el inicio de sesión (CORREGIDO CON SESSION_START)
     public function procesarLogin() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $correo = trim($_POST['correo']);
@@ -48,7 +48,11 @@ class UsuarioController {
                 $usuario = $usuarioModel->login($correo, $password);
 
                 if ($usuario) {
-                    session_start();
+                    // CORRECCIÓN: Aseguramos que la sesión se inicie antes de guardar los datos
+                    if (session_status() === PHP_SESSION_NONE) {
+                        session_start();
+                    }
+
                     $_SESSION['usuario_id'] = $usuario['id'];
                     $_SESSION['nombre'] = $usuario['nombre'];
                     $_SESSION['correo'] = $usuario['correo'];

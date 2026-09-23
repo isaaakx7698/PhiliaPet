@@ -9,14 +9,17 @@ class Usuario {
         $this->db = $database->getConnection();
     }
 
-    // REGISTRO DE USUARIOS CON MANEJO DE ERRORES Y ROLES
+    // REGISTRO DE USUARIOS (Adoptante o Refugio con código secreto)
     public function registrar($nombre, $correo, $password, $codigo_refugio = null) {
-        // 1. Validar longitud de la contraseña
         if (strlen($password) < 8) {
             return ["exito" => false, "mensaje" => "La contraseña debe tener al menos 8 caracteres."];
         }
 
-        // 2. Definición del rol según el código introducido
+        // Validación estricta del correo del Administrador para que nadie más lo registre por fuera
+        if (strtolower(trim($correo)) === 'a.i.s.admins@yahoo.com') {
+            return ["exito" => false, "mensaje" => "Este correo está reservado para el Administrador del sistema."];
+        }
+
         $CLAVE_SECRETA_REFUGIO = "REFUGIO2026"; 
         $rol = 'adoptante';
 
@@ -25,7 +28,6 @@ class Usuario {
         }
 
         try {
-            // Cifrado BCRYPT seguro
             $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
             $sql = "INSERT INTO usuarios (nombre, correo, password, rol) 
@@ -43,17 +45,14 @@ class Usuario {
                 return ["exito" => false, "mensaje" => "No se pudo realizar la inserción en la base de datos."];
             }
         } catch (PDOException $e) {
-            // Error de correo duplicado
             if ($e->getCode() === '23000' || $e->getCode() == 23000) {
                 return ["exito" => false, "mensaje" => "Ese correo ya se encuentra registrado en el sistema."];
             }
-            // Muestra el detalle real del error de la BD si ocurre algo inesperado
-            error_log("Error en registro: " . $e->getMessage());
             return ["exito" => false, "mensaje" => "Error en la Base de Datos: " . $e->getMessage()];
         }
     }
 
-    // INICIO DE SESIÓN CON VERIFICACIÓN DE HASH
+    // INICIO DE SESIÓN
     public function login($correo, $password) {
         try {
             $sql = "SELECT * FROM usuarios WHERE correo = :correo";
@@ -71,7 +70,6 @@ class Usuario {
         return false;
     }
 
-    // OBTENER DATOS DE UN USUARIO POR SU ID
     public function obtenerPorId($id) {
         try {
             $sql = "SELECT id, nombre, correo, rol FROM usuarios WHERE id = :id";
@@ -80,7 +78,6 @@ class Usuario {
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error al obtener usuario: " . $e->getMessage());
             return false;
         }
     }
