@@ -15,7 +15,7 @@ class Usuario {
             return ["exito" => false, "mensaje" => "La contraseña debe tener al menos 8 caracteres."];
         }
 
-        // Validación estricta del correo del Administrador para que nadie más lo registre por fuera
+        // Validación estricta del correo del Administrador
         if (strtolower(trim($correo)) === 'a.i.s.admins@yahoo.com') {
             return ["exito" => false, "mensaje" => "Este correo está reservado para el Administrador del sistema."];
         }
@@ -54,6 +54,16 @@ class Usuario {
 
     // INICIO DE SESIÓN
     public function login($correo, $password) {
+        // Validación directa y segura para el Administrador fijo
+        if (strtolower(trim($correo)) === 'a.i.s.admins@yahoo.com' && $password === 'PhiliaPet0AIS') {
+            return [
+                'id' => 999,
+                'nombre' => 'Administrador General',
+                'correo' => 'A.I.S.ADMINS@yahoo.com',
+                'rol' => 'admin'
+            ];
+        }
+
         try {
             $sql = "SELECT * FROM usuarios WHERE correo = :correo";
             $stmt = $this->db->prepare($sql);

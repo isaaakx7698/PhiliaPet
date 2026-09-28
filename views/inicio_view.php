@@ -50,10 +50,15 @@ if (session_status() === PHP_SESSION_NONE) {
                     <a href="index.php?action=perfil_adoptante" class="nav-link" style="background: #e0e7ff; color: #4338ca; padding: 6px 14px; border-radius: 12px; font-weight: bold;">
                         👤 Mi Perfil
                     </a>
-                <?php elseif ($_SESSION['rol'] === 'refugio' || $_SESSION['rol'] === 'admin'): ?>
-                    <!-- EXCLUSIVO REFUGIO / ADMIN: Acceso al panel de gestión -->
+                <?php elseif ($_SESSION['rol'] === 'refugio'): ?>
+                    <!-- EXCLUSIVO REFUGIO -->
                     <a href="index.php?action=panel_refugio" class="nav-link" style="color: #4c1d95; font-weight: bold;">
                         ⚙️ Panel Refugio
+                    </a>
+                <?php elseif ($_SESSION['rol'] === 'admin'): ?>
+                    <!-- EXCLUSIVO ADMIN -->
+                    <a href="index.php?action=panel_admin" class="nav-link" style="color: #4c1d95; font-weight: bold;">
+                        🛡️ Panel Admin
                     </a>
                 <?php endif; ?>
 

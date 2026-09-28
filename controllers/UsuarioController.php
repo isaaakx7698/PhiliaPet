@@ -37,7 +37,7 @@ class UsuarioController {
         }
     }
 
-    // Procesa el inicio de sesión (CORREGIDO CON SESSION_START)
+    // Procesa el inicio de sesión
     public function procesarLogin() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $correo = trim($_POST['correo']);
@@ -48,7 +48,7 @@ class UsuarioController {
                 $usuario = $usuarioModel->login($correo, $password);
 
                 if ($usuario) {
-                    // CORRECCIÓN: Aseguramos que la sesión se inicie antes de guardar los datos
+                    // Aseguramos que la sesión se inicie antes de guardar los datos
                     if (session_status() === PHP_SESSION_NONE) {
                         session_start();
                     }
@@ -58,8 +58,10 @@ class UsuarioController {
                     $_SESSION['correo'] = $usuario['correo'];
                     $_SESSION['rol'] = $usuario['rol'];
 
-                    // Redirección según su rol de usuario
-                    if ($usuario['rol'] === 'refugio' || $usuario['rol'] === 'admin') {
+                    // Redirección separada según el rol del usuario
+                    if ($usuario['rol'] === 'admin') {
+                        header("Location: index.php?action=panel_admin");
+                    } elseif ($usuario['rol'] === 'refugio') {
                         header("Location: index.php?action=panel_refugio");
                     } else {
                         header("Location: index.php?action=inicio");

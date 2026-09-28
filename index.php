@@ -1,9 +1,4 @@
 <?php
-// se hace la modiificacion de
-// forma temporal
-//kmjdkjnhdkuwheñolkmaljubg
-//ishjahdkugheifhaj
-
 // Configuración de errores para desarrollo
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -57,7 +52,17 @@ switch ($action) {
             header("Location: index.php?action=login");
             exit();
         }
-        require_once 'views/perfil_adoptante_view.php'; // Tu vista de perfil de adoptante
+        require_once 'views/perfil_adoptante_view.php'; 
+        break;
+
+    case 'panel_admin':
+        session_start();
+        // Validación estricta: Solo el rol 'admin' puede entrar aquí
+        if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
+            header("Location: index.php?action=inicio");
+            exit();
+        }
+        require_once 'views/panel_admin_view.php';
         break;
 
     case 'panel_refugio':
