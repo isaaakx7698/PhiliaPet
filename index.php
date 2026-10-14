@@ -102,6 +102,13 @@ switch ($action) {
         require_once 'views/unir_refugio_view.php';
         break;
 
+    case 'unir_refugio':
+        require_once 'views/unir_refugio_view.php';
+        break;
+    case 'calendario':
+        require_once 'views/calendario_view.php';
+        break;
+
     // ==========================================
     // ⚙️ GESTIÓN DE MASCOTAS (ADMIN / REFUGIO)
     // ==========================================
@@ -117,7 +124,8 @@ switch ($action) {
         $controller->editar();
         break;
 
-    case 'actualizar_mascota':
+    
+        case 'actualizar_mascota':
         require_once 'controllers/MascotaController.php';
         $controller = new MascotaController();
         $controller->actualizar();

@@ -39,7 +39,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
             </div>
 
-            <a href="#calendario" class="nav-link">📅 Calendario</a>
+            <a href="index.php?action=calendario" class="nav-link">📅 Calendario</a>
             <a href="#donar" class="nav-link btn-nav-donar">🎁 Donar</a>
 
             <!-- LÓGICA DE VISIBILIDAD DE BOTONES SEGÚN EL ROL -->
@@ -153,11 +153,14 @@ if (session_status() === PHP_SESSION_NONE) {
                                 </span>
                             </div>
                             <p class="detalles"><?php echo htmlspecialchars($m['historia']); ?></p>
+                            
+                            <!-- CAJITA INFORMATIVA -->
                             <div class="fundacion-info">
-                                <p>🏢 <strong>Fundación:</strong> Huellas & Patitas</p>
-                                <p>📞 Redes y contacto verificado</p>
+                                <p style="margin: 0 0 4px 0;">🏢 <strong>Fundación:</strong> Huellas & Patitas</p>
+                                <p style="margin: 0;">📞 Redes y contacto verificado</p>
                             </div>
-                            <a href="index.php?action=detalle_adopcion&id=<?php echo $m['id']; ?>" class="btn-tarjeta-contacto">Contactar Fundación 🐾</a>
+
+
                         </div>
                     </div>
                 <?php endforeach; ?>
