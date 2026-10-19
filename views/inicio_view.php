@@ -62,6 +62,49 @@ if (session_status() === PHP_SESSION_NONE) {
             transition: all 0.2s ease;
             box-shadow: 0 2px 6px rgba(109, 40, 217, 0.05);
         }
+        /* MENÚ DESPLEGABLE CORREGIDO PARA QUE NO SE SALGA */
+        .dropdown-usuario {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-usuario .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0; /* Anclado al borde derecho del contenedor */
+            left: auto;
+            top: 110%;
+            background-color: #ffffff;
+            min-width: 190px;
+            box-shadow: 0 10px 25px rgba(109, 40, 217, 0.18);
+            border-radius: 14px;
+            padding: 6px 0;
+            z-index: 9999;
+            border: 1px solid #e9d5ff;
+        }
+
+        .dropdown-usuario:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-usuario .dropdown-content a {
+            color: #312e81 !important;
+            padding: 9px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .dropdown-usuario .dropdown-content a:hover {
+            background-color: #f3e8ff !important;
+            color: #6d28d9 !important;
+        }
 
         /* EFECTO HOVER: SE OSCURECE Y ELEVA LEVEMENTEMENTE */
         header nav a.nav-link:hover, 
@@ -75,8 +118,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
         /* FOTO DE PERFIL EN CÍRCULO ESTILO INSTAGRAM */
         .foto-header-circulo {
-            width: 38px;
-            height: 38px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             overflow: hidden;
             border: 2px solid #7c3aed;
@@ -87,6 +130,13 @@ if (session_status() === PHP_SESSION_NONE) {
             flex-shrink: 0;
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .foto-header-circulo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
         }
 
         .foto-header-circulo:hover {
@@ -376,16 +426,21 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="#donar" class="nav-link">🎁 Donar</a>
 
             <!-- MENÚ DE USUARIO CON SÓLO LA FOTO Y DROPDOWN AL HOVER -->
-            <?php if (isset($_SESSION['rol'])): ?>
-                
-                <div class="dropdown-usuario">
-                    <a href="index.php?action=perfil_adoptante" class="foto-header-circulo" style="text-decoration: none;">
-                        <?php if (!empty($_SESSION['foto'])): ?>
-                            <img src="<?php echo htmlspecialchars($_SESSION['foto']); ?>" alt="Foto de perfil">
-                        <?php else: ?>
-                            <span style="font-size: 1.1rem;">👤</span>
-                        <?php endif; ?>
-                    </a>
+             
+        <?php if (isset($_SESSION['rol'])): ?>
+        
+            <div class="dropdown-usuario">
+                   <?php 
+                $foto_usuario = $_SESSION['foto'] ?? $_SESSION['imagen'] ?? $_SESSION['foto_perfil'] ?? '';
+                if (!empty($foto_usuario) && !str_starts_with($foto_usuario, 'assets/')) {
+                    $foto_usuario = 'assets/img/perfiles/' . ltrim($foto_usuario, '/');
+                }
+            ?>
+            <?php if (!empty($foto_usuario)): ?>
+                <img src="<?php echo htmlspecialchars($foto_usuario); ?>" alt="Foto de perfil" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; display: block;">
+            <?php else: ?>
+                <span style="font-size: 1.1rem;">👤</span>
+            <?php endif; ?>
 
                     <div class="dropdown-content">
                         <div style="padding: 8px 14px; font-size: 0.78rem; color: #6d28d9; font-weight: 800; border-bottom: 1px solid #f3e8ff;">

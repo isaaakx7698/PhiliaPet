@@ -237,7 +237,13 @@ if (session_status() === PHP_SESSION_NONE) {
                     <input type="file" name="foto" id="foto" accept="image/*">
                 </div>
 
-                <h1>Mi Perfil de Adoptante</h1>
+                <h2>
+                    <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'refugio'): ?>
+                        Mi Perfil de Refugio 🏢
+                    <?php else: ?>
+                        Mi Perfil de Adoptante 🐾
+                    <?php endif; ?>
+                </h2>
                 <p>Información personal, foto y descripción en la plataforma</p>
             </div>
 
@@ -253,7 +259,13 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
 
             <div class="form-group">
-                <label for="descripcion">Descripción / Biografía Personal:</label>
+                <label>
+                    <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'refugio'): ?>
+                        DESCRIPCIÓN DE LA FUNDACIÓN / REFUGIO:
+                    <?php else: ?>
+                        DESCRIPCIÓN / BIOGRAFÍA PERSONAL:
+                    <?php endif; ?>
+                </label>
                 <textarea name="descripcion" id="descripcion" placeholder="Cuéntanos un poco sobre ti, por qué amas a los animales o qué buscas en PhiliaPet..."><?php echo htmlspecialchars($usuario['descripcion'] ?? ''); ?></textarea>
             </div>
 
