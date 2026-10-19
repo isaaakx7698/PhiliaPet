@@ -75,8 +75,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
         /* FOTO DE PERFIL EN CÍRCULO ESTILO INSTAGRAM */
         .foto-header-circulo {
-            width: 30px;
-            height: 30px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             overflow: hidden;
             border: 2px solid #7c3aed;
@@ -85,6 +85,13 @@ if (session_status() === PHP_SESSION_NONE) {
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .foto-header-circulo:hover {
+            transform: scale(1.08);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
         }
 
         .foto-header-circulo img {
@@ -141,6 +148,201 @@ if (session_status() === PHP_SESSION_NONE) {
             background-color: #f3e8ff !important;
             color: #6d28d9 !important;
         }
+
+        /* ESTILOS SECCIÓN QUIÉNES SOMOS */
+        .seccion-quienes-somos {
+            padding: 30px 20px;
+            max-width: 850px;
+            margin: 40px auto;
+        }
+
+        .tarjeta-quienes-somos {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px dashed #c4b5fd;
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(109, 40, 217, 0.08);
+        }
+
+        .tarjeta-quienes-somos h2 {
+            color: #5b21b6;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .tarjeta-quienes-somos p {
+            color: #4b5563;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .equipo-grid-pagina {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .miembro-equipo {
+            background: #fcf8ff;
+            border: 1.5px solid #e9d5ff;
+            border-radius: 18px;
+            padding: 20px 15px;
+            box-shadow: 0 4px 12px rgba(109, 40, 217, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .miembro-equipo:hover {
+            transform: translateY(-3px);
+            border-color: #8b5cf6;
+        }
+
+        .miembro-foto-container {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 12px auto;
+            border: 2.5px solid #7c3aed;
+            background: #ede9fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .miembro-foto-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .miembro-equipo h3 {
+            color: #312e81;
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+        }
+
+        .miembro-equipo span {
+            color: #7c3aed;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* FOOTER COMPACTO EN TONOS PASTEL */
+        footer {
+            background: linear-gradient(135deg, #f3e8ff, #ede9fe);
+            color: #4c1d95;
+            text-align: center;
+            padding: 18px 20px 22px 20px;
+            margin-top: 25px;
+            border-top: 1.5px solid rgba(196, 181, 253, 0.6);
+        }
+
+        footer p {
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            color: #581c87;
+            font-weight: 500;
+        }
+
+        /* BOTÓN DE TRATAMIENTO DE DATOS */
+        .btn-tratamiento-datos {
+            background: rgba(255, 255, 255, 0.85);
+            color: #6d28d9;
+            border: 1.5px solid #c4b5fd;
+            padding: 8px 18px;
+            border-radius: 22px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 8px rgba(109, 40, 217, 0.1);
+        }
+
+        .btn-tratamiento-datos:hover {
+            background: #ffffff;
+            border-color: #8b5cf6;
+            color: #5b21b6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(124, 58, 237, 0.22);
+        }
+
+        /* VENTANA MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(30, 27, 75, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            color: #1e1b4b;
+            padding: 30px;
+            border-radius: 24px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 15px 35px rgba(46, 16, 101, 0.25);
+            border: 2px solid #ede9fe;
+            text-align: left;
+            position: relative;
+            animation: modalEntrada 0.25s ease-out;
+        }
+
+        @keyframes modalEntrada {
+            from { transform: translateY(15px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-content h3 {
+            color: #5b21b6;
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-content p {
+            font-size: 0.92rem;
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .btn-cerrar-modal {
+            background: #7c3aed;
+            color: #ffffff;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            transition: background 0.2s ease;
+        }
+
+        .btn-cerrar-modal:hover {
+            background: #6d28d9;
+        }
     </style>
 </head>
 <body>
@@ -173,22 +375,23 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="index.php?action=calendario" class="nav-link">📅 Calendario</a>
             <a href="#donar" class="nav-link">🎁 Donar</a>
 
-            <!-- MENÚ DE USUARIO ESTILO INSTAGRAM -->
+            <!-- MENÚ DE USUARIO CON SÓLO LA FOTO Y DROPDOWN AL HOVER -->
             <?php if (isset($_SESSION['rol'])): ?>
                 
                 <div class="dropdown-usuario">
-                    <a href="#" class="btn-perfil-header">
-                        <div class="foto-header-circulo">
-                            <?php if (!empty($_SESSION['foto'])): ?>
-                                <img src="<?php echo htmlspecialchars($_SESSION['foto']); ?>" alt="Foto de perfil">
-                            <?php else: ?>
-                                <span style="font-size: 0.95rem;">👤</span>
-                            <?php endif; ?>
-                        </div>
-                        <span><?php echo htmlspecialchars($_SESSION['nombre'] ?? 'Mi Cuenta'); ?> ▾</span>
+                    <a href="index.php?action=perfil_adoptante" class="foto-header-circulo" style="text-decoration: none;">
+                        <?php if (!empty($_SESSION['foto'])): ?>
+                            <img src="<?php echo htmlspecialchars($_SESSION['foto']); ?>" alt="Foto de perfil">
+                        <?php else: ?>
+                            <span style="font-size: 1.1rem;">👤</span>
+                        <?php endif; ?>
                     </a>
 
                     <div class="dropdown-content">
+                        <div style="padding: 8px 14px; font-size: 0.78rem; color: #6d28d9; font-weight: 800; border-bottom: 1px solid #f3e8ff;">
+                            Hola, <?php echo htmlspecialchars($_SESSION['nombre'] ?? 'Usuario'); ?>
+                        </div>
+
                         <?php if ($_SESSION['rol'] === 'adoptante'): ?>
                             <a href="index.php?action=perfil_adoptante">👤 Mi Perfil</a>
                         <?php elseif ($_SESSION['rol'] === 'refugio'): ?>
@@ -216,7 +419,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <section id="inicio" class="hero-section">
         <div class="hero-contenido">
             <span class="badge-alerta">✨ Red de Apoyo de Bogotá ✨</span>
-            <h1>🐶¡Cambia una vida y llena la tuya de puro amor! 🐱</h1>
+            <h1>🐶 ¡Cambia una vida y llena la tuya de puro amor! 🐱</h1>
             <p>Conectamos y validamos las fundaciones más lindas de la ciudad para que adoptes de forma 100% segura. ¡Tu nuevo mejor amigo te está esperando!</p>
             
             <div class="buscador-magico">
@@ -309,28 +512,80 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </section>
 
-    <!-- SECCIÓN DONACIONES -->
-    <section id="donar" class="seccion-donaciones">
-        <div class="tarjeta-donaciones-completa">
-            <h2>Libertad de apoyar con lo que puedas 🎁</h2>
-            <p>Las fundaciones independientes no tienen recursos fijos. Desde PhiliaPet puedes apoyarlas directamente con dinero, alimento o cobijas de forma transparente.</p>
+    <!-- SECCIÓN QUIÉNES SOMOS (CON ISAMAR, ANA MARÍA Y SUSAN) -->
+    <section id="quienes-somos" class="seccion-quienes-somos">
+        <div class="tarjeta-quienes-somos">
+            <h2>👥 Quiénes Somos</h2>
+            <p>Los integrantes del equipo creador y desarrollador de PhiliaPet somos:</p>
             
-            <div class="nequi-caja-destacada">
-                <h3>Aporte Directo por Nequi</h3>
-                <p>Cada lugar tiene su QR verificado para que tu ayuda llegue directo y sin intermediarios.</p>
-                <div class="qr-grafico">
-                    <div class="qr-interior">NEQUI QR</div>
+            <div class="equipo-grid-pagina">
+                <!-- Isamar -->
+                <div class="miembro-equipo">
+                    <div class="miembro-foto-container">
+                        <img src="assets/img/isamar.jpeg" alt="Isamar" onerror="this.onerror=null; this.parentElement.innerHTML='<span style=\'font-size:2rem;\'>👩‍💻</span>';">
+                    </div>
+                    <h3>Isamar</h3>
+                    <span>Desarrolladora</span>
                 </div>
-                <p class="alerta-nequi">🔒 Proyecto Seguro, Validado y Transparente</p>
+
+                <!-- Ana María -->
+                <div class="miembro-equipo">
+                    <div class="miembro-foto-container">
+                        <img src="assets/img/anamaria.jpg" alt="Ana María" onerror="this.onerror=null; this.parentElement.innerHTML='<span style=\'font-size:2rem;\'>👩‍💻</span>';">
+                    </div>
+                    <h3>Ana María</h3>
+                    <span>Desarrolladora</span>
+                </div>
+
+                <!-- Susan -->
+                <div class="miembro-equipo">
+                    <div class="miembro-foto-container">
+                        <img src="assets/img/susan.jpeg" alt="Susan" onerror="this.onerror=null; this.parentElement.innerHTML='<span style=\'font-size:2rem;\'>👩‍💻</span>';">
+                    </div>
+                    <h3>Susan</h3>
+                    <span>Desarrolladora</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- FOOTER CON BOTÓN DE TRATAMIENTO DE DATOS -->
     <footer>
         <p><strong>PhiliaPet</strong> — Transformando el futuro de los refugios de Bogotá 🐾</p>
         <p>&copy; 2026 Conectando corazones peluditos con total responsabilidad.</p>
+        
+        <button class="btn-tratamiento-datos" onclick="abrirModalDatos()">
+            🔒 Tratamiento de datos
+        </button>
     </footer>
+
+    <!-- VENTANA MODAL DE TRATAMIENTO DE DATOS -->
+    <div id="modalTratamiento" class="modal-overlay">
+        <div class="modal-content">
+            <h3>🔒 Tratamiento de Datos Personales</h3>
+            <p>El presente proyecto tiene fines exclusivamente académicos. Los datos utilizados durante el desarrollo, las pruebas y la demostración del sistema son ficticios y fueron creados únicamente con fines de simulación. El sistema no recolecta, almacena ni procesa datos personales reales de estudiantes, docentes o terceros.</p>
+            <button class="btn-cerrar-modal" onclick="cerrarModalDatos()">Entendido ✨</button>
+        </div>
+    </div>
+
+    <!-- SCRIPT DE LA MODAL -->
+    <script>
+        function abrirModalDatos() {
+            document.getElementById('modalTratamiento').style.display = 'flex';
+        }
+
+        function cerrarModalDatos() {
+            document.getElementById('modalTratamiento').style.display = 'none';
+        }
+
+        // Cerrar modal haciendo clic fuera de la cajita blanca
+        window.onclick = function(event) {
+            let modal = document.getElementById('modalTratamiento');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
 
 </body>
 </html>
