@@ -11,6 +11,137 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhiliaPet 🐾 ¡Encuentra tu Amor Peludito!</title>
     <link rel="stylesheet" href="assets/style.css">
+    
+    <style>
+        /* ESTILOS DEL NUEVO HEADER EN TIERRA LILA / DIFUMINADO */
+        header {
+            background: linear-gradient(135deg, rgba(237, 233, 254, 0.85), rgba(221, 214, 254, 0.75));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 2px solid rgba(196, 181, 253, 0.6);
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(109, 40, 217, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-animado {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1e1b4b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        header nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* BOTONES COMPACTOS, DIFUMINADOS Y ESTILIZADOS */
+        header nav a.nav-link, 
+        .btn-perfil-header {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(6px);
+            border: 1.5px solid rgba(196, 181, 253, 0.8);
+            color: #312e81;
+            padding: 7px 14px;
+            border-radius: 30px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(109, 40, 217, 0.05);
+        }
+
+        /* EFECTO HOVER: SE OSCURECE Y ELEVA LEVEMENTEMENTE */
+        header nav a.nav-link:hover, 
+        .btn-perfil-header:hover {
+            background: rgba(221, 214, 254, 0.9);
+            border-color: #8b5cf6;
+            color: #3b0764;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(109, 40, 217, 0.15);
+        }
+
+        /* FOTO DE PERFIL EN CÍRCULO ESTILO INSTAGRAM */
+        .foto-header-circulo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #7c3aed;
+            background: #ede9fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .foto-header-circulo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* MENÚ DESPLEGABLE */
+        .dropdown-usuario, .dropdown-fundaciones {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-usuario .dropdown-content,
+        .dropdown-fundaciones .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 105%;
+            background-color: #ffffff;
+            min-width: 180px;
+            box-shadow: 0 10px 25px rgba(109, 40, 217, 0.15);
+            border-radius: 14px;
+            padding: 6px 0;
+            z-index: 1000;
+            border: 1px solid #e9d5ff;
+        }
+
+        .dropdown-usuario:hover .dropdown-content,
+        .dropdown-fundaciones:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-usuario .dropdown-content a,
+        .dropdown-fundaciones .dropdown-content a {
+            color: #312e81 !important;
+            padding: 8px 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: transparent !important;
+            border: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            transition: background 0.15s ease;
+        }
+
+        .dropdown-usuario .dropdown-content a:hover,
+        .dropdown-fundaciones .dropdown-content a:hover {
+            background-color: #f3e8ff !important;
+            color: #6d28d9 !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -21,53 +152,62 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 
-    <!-- ENCABEZADO CON CONTROL DINÁMICO DE ROLES -->
+    <!-- ENCABEZADO CON DISEÑO LILA DIFUMINADO -->
     <header>
         <div class="logo-animado">
-            <span>🐾</span> PhiliaPet <span class="heart">❤️</span>
+            <span>🐾</span> PhiliaPet <span style="color: #7c3aed;">❤️</span>
         </div>
         <nav>
-            <a href="index.php?action=inicio" class="nav-link activo">Inicio</a>
-            <a href="index.php?action=catalogo_adopcion" class="nav-link" style="color: #047857; font-weight: bold;">🐾 Adopta</a>
+            <a href="index.php?action=inicio" class="nav-link">🏠 Inicio</a>
+            <a href="index.php?action=catalogo_adopcion" class="nav-link">🐾 Adopta</a>
             
             <!-- MENÚ DESPLEGABLE DE FUNDACIONES -->
             <div class="dropdown-fundaciones">
-                <a href="#mascotas" class="nav-link">Fundaciones ▾</a>
+                <a href="#mascotas" class="nav-link">🏢 Fundaciones ▾</a>
                 <div class="dropdown-content">
                     <a href="#mascotas">Ver Listado</a>
-                    <a href="index.php?action=unir_refugio" style="color: var(--verde-borde) !important; font-weight: bold;">🐾 Unir mi Refugio</a>
+                    <a href="index.php?action=unir_refugio" style="color: #6d28d9 !important; font-weight: bold;">🐾 Unir mi Refugio</a>
                 </div>
             </div>
 
             <a href="index.php?action=calendario" class="nav-link">📅 Calendario</a>
-            <a href="#donar" class="nav-link btn-nav-donar">🎁 Donar</a>
+            <a href="#donar" class="nav-link">🎁 Donar</a>
 
-            <!-- LÓGICA DE VISIBILIDAD DE BOTONES SEGÚN EL ROL -->
+            <!-- MENÚ DE USUARIO ESTILO INSTAGRAM -->
             <?php if (isset($_SESSION['rol'])): ?>
                 
-                <?php if ($_SESSION['rol'] === 'adoptante'): ?>
-                    <!-- EXCLUSIVO ADOPTANTE: Solo puede ver su Perfil -->
-                    <a href="index.php?action=perfil_adoptante" class="nav-link" style="background: #e0e7ff; color: #4338ca; padding: 6px 14px; border-radius: 12px; font-weight: bold;">
-                        👤 Mi Perfil
+                <div class="dropdown-usuario">
+                    <a href="#" class="btn-perfil-header">
+                        <div class="foto-header-circulo">
+                            <?php if (!empty($_SESSION['foto'])): ?>
+                                <img src="<?php echo htmlspecialchars($_SESSION['foto']); ?>" alt="Foto de perfil">
+                            <?php else: ?>
+                                <span style="font-size: 0.95rem;">👤</span>
+                            <?php endif; ?>
+                        </div>
+                        <span><?php echo htmlspecialchars($_SESSION['nombre'] ?? 'Mi Cuenta'); ?> ▾</span>
                     </a>
-                <?php elseif ($_SESSION['rol'] === 'refugio'): ?>
-                    <!-- EXCLUSIVO REFUGIO -->
-                    <a href="index.php?action=panel_refugio" class="nav-link" style="color: #4c1d95; font-weight: bold;">
-                        ⚙️ Panel Refugio
-                    </a>
-                <?php elseif ($_SESSION['rol'] === 'admin'): ?>
-                    <!-- EXCLUSIVO ADMIN -->
-                    <a href="index.php?action=panel_admin" class="nav-link" style="color: #4c1d95; font-weight: bold;">
-                        🛡️ Panel Admin
-                    </a>
-                <?php endif; ?>
 
-                <a href="index.php?action=logout" class="nav-link" style="color: #ef4444; font-weight: 600;">Cerrar Sesión</a>
+                    <div class="dropdown-content">
+                        <?php if ($_SESSION['rol'] === 'adoptante'): ?>
+                            <a href="index.php?action=perfil_adoptante">👤 Mi Perfil</a>
+                        <?php elseif ($_SESSION['rol'] === 'refugio'): ?>
+                            <a href="index.php?action=panel_refugio">⚙️ Panel Refugio</a>
+                            <a href="index.php?action=perfil_adoptante">👤 Mi Perfil</a>
+                        <?php elseif ($_SESSION['rol'] === 'admin'): ?>
+                            <a href="index.php?action=panel_admin">🛡️ Panel Admin</a>
+                            <a href="index.php?action=perfil_adoptante">👤 Mi Perfil</a>
+                        <?php endif; ?>
+                        
+                        <div style="border-top: 1px solid #f3e8ff; margin: 3px 0;"></div>
+                        <a href="index.php?action=logout" style="color: #ef4444 !important; font-weight: 700;">🚪 Cerrar Sesión</a>
+                    </div>
+                </div>
 
             <?php else: ?>
                 <!-- VISITANTES SIN INICIAR SESIÓN -->
                 <a href="index.php?action=registro" class="nav-link">Registrarse</a>
-                <a href="index.php?action=login" class="nav-link" style="color: #0284c7; font-weight: bold;">Ingresar</a>
+                <a href="index.php?action=login" class="nav-link" style="color: #6d28d9; font-weight: bold;">Ingresar</a>
             <?php endif; ?>
         </nav>
     </header>
@@ -76,7 +216,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <section id="inicio" class="hero-section">
         <div class="hero-contenido">
             <span class="badge-alerta">✨ Red de Apoyo de Bogotá ✨</span>
-            <h1>¡Cambia una vida y llena la tuya de puro amor! 🐶🐱</h1>
+            <h1>🐶¡Cambia una vida y llena la tuya de puro amor! 🐱</h1>
             <p>Conectamos y validamos las fundaciones más lindas de la ciudad para que adoptes de forma 100% segura. ¡Tu nuevo mejor amigo te está esperando!</p>
             
             <div class="buscador-magico">
@@ -159,7 +299,6 @@ if (session_status() === PHP_SESSION_NONE) {
                                 <p style="margin: 0 0 4px 0;">🏢 <strong>Fundación:</strong> Huellas & Patitas</p>
                                 <p style="margin: 0;">📞 Redes y contacto verificado</p>
                             </div>
-
 
                         </div>
                     </div>

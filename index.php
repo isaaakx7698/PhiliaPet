@@ -34,6 +34,12 @@ switch ($action) {
         $controller->procesarLogin();
         break;
 
+    case 'actualizar_perfil':
+        require_once 'controllers/UsuarioController.php';
+        $controller = new UsuarioController();
+        $controller->actualizarPerfil();
+        break;
+
     case 'logout':
         // Cierra la sesión de forma segura y devuelve al inicio
         session_start();
@@ -52,7 +58,10 @@ switch ($action) {
             header("Location: index.php?action=login");
             exit();
         }
-        require_once 'views/perfil_adoptante_view.php'; 
+        // Llamamos al controlador para que cargue la información fresca de la base de datos
+        require_once 'controllers/UsuarioController.php';
+        $controller = new UsuarioController();
+        $controller->mostrarPerfil();
         break;
 
     case 'panel_admin':
@@ -102,9 +111,6 @@ switch ($action) {
         require_once 'views/unir_refugio_view.php';
         break;
 
-    case 'unir_refugio':
-        require_once 'views/unir_refugio_view.php';
-        break;
     case 'calendario':
         require_once 'views/calendario_view.php';
         break;
@@ -124,8 +130,7 @@ switch ($action) {
         $controller->editar();
         break;
 
-    
-        case 'actualizar_mascota':
+    case 'actualizar_mascota':
         require_once 'controllers/MascotaController.php';
         $controller = new MascotaController();
         $controller->actualizar();

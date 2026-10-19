@@ -9,87 +9,64 @@ class Usuario {
         $this->db = $database->getConnection();
     }
 
-    // REGISTRO DE USUARIOS (Adoptante o Refugio con código secreto)
+    // Registra un nuevo usuario
     public function registrar($nombre, $correo, $password, $codigo_refugio = null) {
-        if (strlen($password) < 8) {
-            return ["exito" => false, "mensaje" => "La contraseña debe tener al menos 8 caracteres."];
+        // Verificar si el correo ya existe
+        $sqlCheck = "SELECT id FROM usuarios WHERE correo = ?";
+        $stmtCheck = $this->db->prepare($sqlCheck);
+        $stmtCheck->execute([$correo]);
+        if ($stmtCheck->fetch()) {
+            return ['exito' => false, 'mensaje' => 'El correo electrónico ya está registrado.'];
         }
 
-        // Validación estricta del correo del Administrador
-        if (strtolower(trim($correo)) === 'a.i.s.admins@yahoo.com') {
-            return ["exito" => false, "mensaje" => "Este correo está reservado para el Administrador del sistema."];
-        }
-
-        $CLAVE_SECRETA_REFUGIO = "REFUGIO2026"; 
+        // Asignación de rol por código secreto
         $rol = 'adoptante';
-
-        if (!empty($codigo_refugio) && trim($codigo_refugio) === $CLAVE_SECRETA_REFUGIO) {
-            $rol = 'refugio';
+        if (!empty($codigo_refugio)) {
+            if ($codigo_refugio === 'REFUGIO2026' || $codigo_refugio === 'SENA2026') {
+                $rol = 'refugio';
+            } else {
+                return ['exito' => false, 'mensaje' => 'El código de refugio es incorrecto.'];
+            }
         }
 
-        try {
-            $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+        $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
-            $sql = "INSERT INTO usuarios (nombre, correo, password, rol) 
-                    VALUES (:nombre, :correo, :password, :rol)";
-            
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':nombre', $nombre);
-            $stmt->bindParam(':correo', $correo);
-            $stmt->bindParam(':password', $passwordHash);
-            $stmt->bindParam(':rol', $rol);
-
-            if ($stmt->execute()) {
-                return ["exito" => true, "mensaje" => "¡Registro exitoso! Ya puedes iniciar sesión."];
-            } else {
-                return ["exito" => false, "mensaje" => "No se pudo realizar la inserción en la base de datos."];
-            }
-        } catch (PDOException $e) {
-            if ($e->getCode() === '23000' || $e->getCode() == 23000) {
-                return ["exito" => false, "mensaje" => "Ese correo ya se encuentra registrado en el sistema."];
-            }
-            return ["exito" => false, "mensaje" => "Error en la Base de Datos: " . $e->getMessage()];
+        $sql = "INSERT INTO usuarios (nombre, correo, password, rol) VALUES (?, ?, ?, ?)";
+        $stmt = $this->db->prepare($sql);
+        
+        if ($stmt->execute([$nombre, $correo, $passwordHash, $rol])) {
+            return ['exito' => true, 'mensaje' => '¡Usuario registrado correctamente! Ahora puedes iniciar sesión.'];
+        } else {
+            return ['exito' => false, 'mensaje' => 'Error al registrar el usuario en la base de datos.'];
         }
     }
 
-    // INICIO DE SESIÓN
+    // Inicia sesión
     public function login($correo, $password) {
-        // Validación directa y segura para el Administrador fijo
-        if (strtolower(trim($correo)) === 'a.i.s.admins@yahoo.com' && $password === 'PhiliaPet0AIS') {
-            return [
-                'id' => 999,
-                'nombre' => 'Administrador General',
-                'correo' => 'A.I.S.ADMINS@yahoo.com',
-                'rol' => 'admin'
-            ];
-        }
+        $sql = "SELECT * FROM usuarios WHERE correo = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$correo]);
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        try {
-            $sql = "SELECT * FROM usuarios WHERE correo = :correo";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':correo', $correo);
-            $stmt->execute();
-            $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($usuario && password_verify($password, $usuario['password'])) {
-                return $usuario; 
-            }
-        } catch (PDOException $e) {
-            error_log("Error en login: " . $e->getMessage());
+        if ($usuario && password_verify($password, $usuario['password'])) {
+            return $usuario;
         }
         return false;
     }
 
+    // Obtiene un usuario por su ID
     public function obtenerPorId($id) {
-        try {
-            $sql = "SELECT id, nombre, correo, rol FROM usuarios WHERE id = :id";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            return false;
-        }
+        $sql = "SELECT * FROM usuarios WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Actualiza los datos del perfil (incluyendo foto y descripción)
+    public function actualizar($id, $nombre, $correo, $descripcion, $foto) {
+        $sql = "UPDATE usuarios SET nombre = ?, correo = ?, descripcion = ?, foto = ? WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$nombre, $correo, $descripcion, $foto, $id]);
     }
 }
 ?>

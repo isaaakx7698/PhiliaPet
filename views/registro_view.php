@@ -178,8 +178,8 @@
 
                     <div class="form-group">
                         <label for="password">CONTRASEÑA</label>
-                        <input type="password" id="password" name="password" minlength="8" required placeholder="Mínimo 8 caracteres">
-                        <small style="color: #0f172a; font-size: 11px; font-weight: 600;">Debe tener al menos 8 caracteres.</small>
+                        <input type="password" id="password" name="password" minlength="8" required placeholder="Mínimo 8 caracteres, 1 mayúscula y 1 número">
+                        <small style="color: #0f172a; font-size: 11px; font-weight: 600;">Mínimo 8 caracteres, al menos una mayúscula y un número.</small>
                     </div>
 
                     <!-- CAMPO DE VERIFICACIÓN PARA REFUGIOS AUTORIZADOS -->
