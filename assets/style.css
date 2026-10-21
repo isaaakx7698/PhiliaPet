@@ -28,12 +28,12 @@ body {
 
 /* MARQUESINA */
 .marquesina-contenedor {
-    background: #fef9c3;
-    color: #713f12;
+    background: #db95c6bb;
+    color: #411a32;
     padding: 8px 0;
     overflow: hidden;
     white-space: nowrap;
-    border-bottom: 2px dashed #fde047;
+    border-bottom: 2px dashed #f385d2;
     width: 100%;
 }
 
@@ -222,16 +222,24 @@ header nav a.btn-registro:hover {
 
 /* BUSCADOR MAGICO */
 .buscador-magico {
-    background: var(--blanco);
-    max-width: 650px;
-    margin: 25px auto 0;
-    padding: 18px 25px;
-    border-radius: 28px;
     display: flex;
-    gap: 15px;
-    align-items: flex-end;
-    border: 3.5px solid var(--morado-borde);
-    box-shadow: 0 12px 25px rgba(91, 33, 182, 0.08);
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: #ffffff;
+    border: 1px solid #6d28d9;
+    border-radius: 50px;
+    padding: 24px 36px; /* Más espacio arriba/abajo (24px) y a los lados (36px) */
+    max-width: 950px;    /* Aumentamos el ancho máximo para que sea más amplio */
+    width: 90%;
+    margin: 30px auto 0 auto;
+    box-shadow: 0 10px 25px rgba(109, 40, 217, 0.15);
+}
+
+.buscador-magico select {
+    padding: 12px 18px;
+    border-radius: 25px;
+    font-size: 1rem;
 }
 
 .input-grupo {
@@ -260,16 +268,26 @@ header nav a.btn-registro:hover {
 }
 
 .btn-buscar-glow {
-    background: var(--morado-borde);
-    color: white;
+    background: #8843af;
+    color: #ffffff;
     border: none;
-    padding: 0 22px;
-    border-radius: 16px;
+    padding: 14px 28px;        /* Más alto y más ancho para alinearse con las cajas */
+    font-size: 1.05rem;         /* Letra un poco más vistosa */
     font-weight: 700;
+    border-radius: 30px;
     cursor: pointer;
-    height: 42px;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;        /* Evita que el texto se parta en dos líneas */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
+.btn-buscar-glow:hover {
+    background: #6c3586;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(59, 50, 143, 0.35);
+}
 /* CALENDARIO Y AGENDA */
 .seccion-calendario {
     max-width: 650px;

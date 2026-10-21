@@ -13,6 +13,16 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="assets/style.css">
     
     <style>
+        body {
+            background-image: url('assets/img/fondo-inicio.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            color: #2d3748;
+        }
         /* ESTILOS DEL NUEVO HEADER EN TIERRA LILA / DIFUMINADO */
         header {
             background: linear-gradient(135deg, rgba(237, 233, 254, 0.85), rgba(221, 214, 254, 0.75));
@@ -137,7 +147,6 @@ if (session_status() === PHP_SESSION_NONE) {
             height: 100%;
             object-fit: cover;
         }
-        }
 
         .foto-header-circulo:hover {
             transform: scale(1.08);
@@ -207,9 +216,9 @@ if (session_status() === PHP_SESSION_NONE) {
         }
 
         .tarjeta-quienes-somos {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(245, 244, 178, 0.56);
             backdrop-filter: blur(10px);
-            border: 2px dashed #c4b5fd;
+            border: 2px dashed #eeba0e;
             border-radius: 24px;
             padding: 30px;
             text-align: center;
@@ -217,7 +226,7 @@ if (session_status() === PHP_SESSION_NONE) {
         }
 
         .tarjeta-quienes-somos h2 {
-            color: #5b21b6;
+            color: #461d05dc;
             font-size: 1.5rem;
             font-weight: 800;
             margin-bottom: 10px;
@@ -247,7 +256,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
         .miembro-equipo:hover {
             transform: translateY(-3px);
-            border-color: #8b5cf6;
+            border-color: #91570b;
         }
 
         .miembro-foto-container {
@@ -256,8 +265,8 @@ if (session_status() === PHP_SESSION_NONE) {
             border-radius: 50%;
             overflow: hidden;
             margin: 0 auto 12px auto;
-            border: 2.5px solid #7c3aed;
-            background: #ede9fe;
+            border: 2.5px solid #553b0b;
+            background: #eec860;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -400,7 +409,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- MARQUESINA -->
     <div class="marquesina-contenedor">
         <div class="marquesina-texto">
-            🐶 ¡ADOPTA, NO COMPRES! • Próxima jornada en C.C. Gran Estación este Sábado 🎉 • Vacunación gratuita con la Fundación Huellas de Amor 🐱 • ¡Ayúdanos a salvar vidas en Bogotá! ❤️ • 
+             ¡ADOPTA, NO COMPRES! • Próxima jornada en C.C. Gran Estación este Sábado 🎉 • Vacunación gratuita con la Fundación Huellas de Amor  • ¡Ayúdanos a salvar vidas en Bogotá! ❤️ • 
         </div>
     </div>
 
@@ -476,26 +485,31 @@ if (session_status() === PHP_SESSION_NONE) {
             <span class="badge-alerta">✨ Red de Apoyo de Bogotá ✨</span>
             <h1>🐶 ¡Cambia una vida y llena la tuya de puro amor! 🐱</h1>
             <p>Conectamos y validamos las fundaciones más lindas de la ciudad para que adoptes de forma 100% segura. ¡Tu nuevo mejor amigo te está esperando!</p>
+
+            <form action="index.php" method="GET" class="buscador-magico">
+                <input type="hidden" name="action" value="catalogo_adopcion">
             
-            <div class="buscador-magico">
                 <div class="input-grupo">
                     <label>¿Qué buscas?</label>
-                    <select>
+                    <select name="especie">
                         <option value="">🐾 Todos los peluditos</option>
-                        <option value="perro">Perritos hermosos</option>
-                        <option value="gato">Gatitos adorables</option>
+                        <option value="perro"> Perritos</option>
+                        <option value="gato"> Gatitos</option>
                     </select>
                 </div>
+            
                 <div class="input-grupo">
                     <label>¿De qué edad?</label>
-                    <select>
+                    <select name="edad">
                         <option value="">🍼 Cualquier edad</option>
                         <option value="cachorro">Cachorros (Bebés)</option>
-                        <option value="adulto">Adultos consentidos</option>
+                        <option value="joven"> Jóvenes</option>
+                        <option value="adulto"> Adultos consentidos</option>
                     </select>
                 </div>
-                <button class="btn-buscar-glow">¡Buscar mi Flechazo! ✨</button>
-            </div>
+            
+                <button type="submit" class="btn-buscar-glow">¡Buscar mi Flechazo! ✨</button>
+            </form>
         </div>
     </section>
 
@@ -608,7 +622,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <footer>
         <p><strong>PhiliaPet</strong> — Transformando el futuro de los refugios de Bogotá 🐾</p>
         <p>&copy; 2026 Conectando corazones peluditos con total responsabilidad.</p>
-        
+        <p><h2>SENA CDM</h2></p>
         <button class="btn-tratamiento-datos" onclick="abrirModalDatos()">
             🔒 Tratamiento de datos
         </button>
