@@ -621,7 +621,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <footer>
         <p><strong>PhiliaPet</strong> — Transformando el futuro de los refugios de Bogotá 🐾</p>
         <p>&copy; 2026 Conectando corazones peluditos con total responsabilidad.</p>
-        <p><h2>SENA CDM</h2></p>
+        <p><h2>SENA Centro Diseño Metrologia</h2></p>
         <button class="btn-tratamiento-datos" onclick="abrirModalDatos()">
             🔒 Tratamiento de datos
         </button>

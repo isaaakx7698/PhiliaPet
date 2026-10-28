@@ -1,5 +1,7 @@
 <?php
 // Aseguramos que la sesión esté activa
+
+//prueba de funcionamiento
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
