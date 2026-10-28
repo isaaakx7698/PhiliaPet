@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-09-2026 a las 15:46:35
+-- Tiempo de generación: 28-10-2026 a las 16:42:52
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.1.27
 
@@ -219,8 +219,10 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `nombre`, `correo`, `password`, `rol`, `created_at`) VALUES
 (1, 'Refugio Central Bogotá', 'refugio@philiapet.com', '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', 'refugio', '2026-09-23 15:39:25'),
-(2, 'Administrador General', 'A.I.S.ADMINS@yahoo.com', '$2y$10$8W3qVv7z3kXmP9z2F3v35uJ8p6j1vK5x2v5m8n1p4q7s0t3u6v9w2', 'admin', '2026-09-23 15:51:59'),
-(6, 'isamar', 'isarrrr@gmail.com', '$2y$10$23sa/MX6G/kgf4/W.83omOPTJR6k1bIgABHLkzS2Nbb2cntvH1.ym', 'adoptante', '2026-09-28 13:35:20');
+(2, 'Administrador General', 'A.I.S.ADMINS@yahoo.com', '$2y$10$dQyH..1prjMJOzk48yJB0ONYbLw.apWwvgF/YGJfKQg8SIgDDuB5i', 'admin', '2026-09-23 15:51:59'),
+(6, 'isamar', 'isarrrr@gmail.com', '$2y$10$23sa/MX6G/kgf4/W.83omOPTJR6k1bIgABHLkzS2Nbb2cntvH1.ym', 'adoptante', '2026-09-28 13:35:20'),
+(7, 'Maria Ramirez', 'mramirez@gmail.com', '$2y$10$dQyH..1prjMJOzk48yJB0ONYbLw.apWwvgF/YGJfKQg8SIgDDuB5i', 'adoptante', '2026-10-26 13:31:22'),
+(8, 'marie', 'marie.lapro@gmail.com', '$2y$10$DiainZBDeY8DOd2qwbxmqeE58XrJ.pt.sgD2fup6XgXzQrNnPHOi6', 'adoptante', '2026-10-28 14:10:49');
 
 --
 -- Índices para tablas volcadas
@@ -344,7 +346,7 @@ ALTER TABLE `solicitudes_contacto`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Restricciones para tablas volcadas
