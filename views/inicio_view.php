@@ -422,11 +422,11 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="index.php?action=inicio" class="nav-link">🏠 Inicio</a>
             <a href="index.php?action=catalogo_adopcion" class="nav-link">🐾 Adopta</a>
             
-            <!-- MENÚ DESPLEGABLE DE FUNDACIONES -->
+            <!-- MENÚ DESPLEGABLE DE FUNDACIONES (CORREGIDO PARA ABRIR PÁGINA APARTE) -->
             <div class="dropdown-fundaciones">
-                <a href="#mascotas" class="nav-link">🏢 Fundaciones ▾</a>
+                <a href="index.php?action=fundaciones" class="nav-link">🏢 Fundaciones ▾</a>
                 <div class="dropdown-content">
-                    <a href="#mascotas">Ver Listado</a>
+                    <a href="index.php?action=fundaciones">Ver Listado</a>
                     <a href="index.php?action=unir_refugio" style="color: #6d28d9 !important; font-weight: bold;">🐾 Unir mi Refugio</a>
                 </div>
             </div>
@@ -434,7 +434,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="index.php?action=calendario" class="nav-link">📅 Calendario</a>
             <a href="#donar" class="nav-link">🎁 Donar</a>
 
-            <!-- MENÚ DE USUARIO CON SÓLO LA FOTO Y DROPDOWN AL HOVER -->
+            <!-- MENÚ DE USUARIO -->
              
         <?php if (isset($_SESSION['rol'])): ?>
         
@@ -459,8 +459,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <?php if ($_SESSION['rol'] === 'adoptante'): ?>
                             <a href="index.php?action=perfil_adoptante">👤 Mi Perfil</a>
                         <?php elseif ($_SESSION['rol'] === 'refugio'): ?>
-                            <a href="index.php?action=panel_refugio">⚙️ Panel Refugio</a>
-                            <a href="index.php?action=perfil_adoptante">👤 Mi Perfil</a>
+                            <a href="index.php?action=fundaciones" class="nav-link">🏢 Fundaciones</a>
                         <?php elseif ($_SESSION['rol'] === 'admin'): ?>
                             <a href="index.php?action=panel_admin">🛡️ Panel Admin</a>
                             <a href="index.php?action=perfil_adoptante">👤 Mi Perfil</a>

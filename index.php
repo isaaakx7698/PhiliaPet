@@ -10,9 +10,8 @@ require_once 'config/database.php';
 $action = $_GET['action'] ?? 'inicio';
 
 switch ($action) {
-    // ==========================================
-    // 👤 RUTAS DE AUTENTICACIÓN Y USUARIOS
-    // ==========================================
+
+    //  RUTAS DE AUTENTICACIÓN Y USUARIOS
     case 'registro':
         require_once 'views/registro_view.php';
         break;
@@ -48,9 +47,7 @@ switch ($action) {
         exit();
         break;
 
-    // ==========================================
-    // 🛡️ VISTAS PROTEGIDAS POR ROL (SEGURIDAD)
-    // ==========================================
+    //  VISTAS PROTEGIDAS POR ROL (SEGURIDAD)
     case 'perfil_adoptante':
         session_start();
         // Validación: Solo usuarios autenticados pueden entrar a su perfil de adoptante
@@ -58,7 +55,7 @@ switch ($action) {
             header("Location: index.php?action=login");
             exit();
         }
-        // Llamamos al controlador para que cargue la información fresca de la base de datos
+     // Llamamos al controlador para que cargue la información fresca de la base de datos
         require_once 'controllers/UsuarioController.php';
         $controller = new UsuarioController();
         $controller->mostrarPerfil();
@@ -66,7 +63,7 @@ switch ($action) {
 
     case 'panel_admin':
         session_start();
-        // Validación estricta: Solo el rol 'admin' puede entrar aquí
+    // Validación estricta: Solo el rol 'admin' puede entrar aquí
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
             header("Location: index.php?action=inicio");
             exit();
@@ -76,7 +73,7 @@ switch ($action) {
 
     case 'panel_refugio':
         session_start();
-        // Validación estricta: Solo los roles 'refugio' o 'admin' pueden gestionar mascotas
+    // Validación estricta: Solo los roles 'refugio' o 'admin' pueden gestionar mascotas
         if (!isset($_SESSION['rol']) || ($_SESSION['rol'] !== 'refugio' && $_SESSION['rol'] !== 'admin')) {
             header("Location: index.php?action=inicio");
             exit();
@@ -86,9 +83,11 @@ switch ($action) {
         $controller->listarAdmin(); // Panel exclusivo del refugio para administrar
         break;
 
-    // ==========================================
-    // 🐾 RUTAS DE MASCOTAS Y ADOPCIÓN (PÚBLICAS/CLIENTE)
-    // ==========================================
+   case 'fundaciones':
+    require_once 'views/fundaciones_view.php';
+    break;
+
+    //  RUTAS DE MASCOTAS Y ADOPCIÓN (PÚBLICAS/CLIENTE)     
     case 'catalogo_adopcion':
         require_once 'controllers/MascotaController.php';
         $controller = new MascotaController();
@@ -115,9 +114,7 @@ switch ($action) {
         require_once 'views/calendario_view.php';
         break;
 
-    // ==========================================
-    // ⚙️ GESTIÓN DE MASCOTAS (ADMIN / REFUGIO)
-    // ==========================================
+    //  GESTIÓN DE MASCOTAS (ADMIN / REFUGIO)
     case 'guardar_mascota':
         require_once 'controllers/MascotaController.php';
         $controller = new MascotaController();
@@ -148,9 +145,7 @@ switch ($action) {
         $controller->listarAdmin();
         break;
 
-    // ==========================================
-    // 🏠 PORTADA PRINCIPAL
-    // ==========================================
+    //  PORTADA PRINCIPAL
     case 'inicio':
     default:
         require_once 'controllers/MascotaController.php';
