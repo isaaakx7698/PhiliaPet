@@ -70,7 +70,9 @@ class UsuarioController {
                     $_SESSION['nombre'] = $usuario['nombre'];
                     $_SESSION['correo'] = $usuario['correo'];
                     $_SESSION['rol'] = $usuario['rol'];
-                    $_SESSION['foto'] = $usuario['foto'] ?? null; // Carga la foto guardada en la BD
+                    
+                    // CORREGIDO: Buscamos de forma segura sin importar el nombre de la columna en la BD
+                    $_SESSION['foto'] = $usuario['foto'] ?? $usuario['imagen'] ?? $usuario['foto_perfil'] ?? null;
 
                     if ($usuario['rol'] === 'admin') {
                         header("Location: index.php?action=panel_admin");
@@ -104,9 +106,10 @@ class UsuarioController {
         $usuario = $usuarioModel->obtenerPorId($_SESSION['usuario_id']);
 
         if ($usuario) {
-            $_SESSION['foto'] = $usuario['foto'];
-            $_SESSION['nombre'] = $usuario['nombre'];
-            $_SESSION['correo'] = $usuario['correo'];
+            // CORREGIDO: Lectura segura para evitar el error de Undefined index
+            $_SESSION['foto'] = $usuario['foto'] ?? $usuario['imagen'] ?? $usuario['foto_perfil'] ?? '';
+            $_SESSION['nombre'] = $usuario['nombre'] ?? '';
+            $_SESSION['correo'] = $usuario['correo'] ?? '';
         }
 
         require_once 'views/perfil_adoptante_view.php';
@@ -131,7 +134,9 @@ class UsuarioController {
             
             $usuarioModel = new Usuario();
             $usuarioActual = $usuarioModel->obtenerPorId($usuario_id);
-            $ruta_foto = $usuarioActual['foto'] ?? null;
+            
+            // CORREGIDO: Lectura segura de la foto actual
+            $ruta_foto = $usuarioActual['foto'] ?? $usuarioActual['imagen'] ?? $usuarioActual['foto_perfil'] ?? null;
 
             // Procesar la subida de imagen
             if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
