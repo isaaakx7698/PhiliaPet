@@ -11,7 +11,7 @@ $action = $_GET['action'] ?? 'inicio';
 
 switch ($action) {
 
-    //  RUTAS DE AUTENTICACIÓN Y USUARIOS
+    // RUTAS DE AUTENTICACIÓN Y USUARIOS
     case 'registro':
         require_once 'views/registro_view.php';
         break;
@@ -23,7 +23,6 @@ switch ($action) {
         break;
 
     case 'login':
-        // Vista del formulario de inicio de sesión
         require_once 'views/login_view.php'; 
         break;
 
@@ -40,22 +39,19 @@ switch ($action) {
         break;
 
     case 'logout':
-        // Cierra la sesión de forma segura y devuelve al inicio
         session_start();
         session_destroy();
         header("Location: index.php?action=inicio");
         exit();
         break;
 
-    //  VISTAS PROTEGIDAS POR ROL (SEGURIDAD)
+    // VISTAS PROTEGIDAS POR ROL (SEGURIDAD)
     case 'perfil_adoptante':
         session_start();
-        // Validación: Solo usuarios autenticados pueden entrar a su perfil de adoptante
         if (!isset($_SESSION['rol'])) {
             header("Location: index.php?action=login");
             exit();
         }
-     // Llamamos al controlador para que cargue la información fresca de la base de datos
         require_once 'controllers/UsuarioController.php';
         $controller = new UsuarioController();
         $controller->mostrarPerfil();
@@ -63,7 +59,6 @@ switch ($action) {
 
     case 'panel_admin':
         session_start();
-    // Validación estricta: Solo el rol 'admin' puede entrar aquí
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
             header("Location: index.php?action=inicio");
             exit();
@@ -73,22 +68,22 @@ switch ($action) {
 
     case 'panel_refugio':
         session_start();
-    // Validación estricta: Solo los roles 'refugio' o 'admin' pueden gestionar mascotas
         if (!isset($_SESSION['rol']) || ($_SESSION['rol'] !== 'refugio' && $_SESSION['rol'] !== 'admin')) {
             header("Location: index.php?action=inicio");
             exit();
         }
         require_once 'controllers/MascotaController.php';
         $controller = new MascotaController();
-        $controller->listarAdmin(); // Panel exclusivo del refugio para administrar
+        $controller->listarAdmin();
         break;
 
-   case 'fundaciones':
-    require_once 'views/fundaciones_view.php';
-    break;
+    case 'fundaciones':
+        require_once 'views/fundaciones_view.php';
+        break;
 
-    //  RUTAS DE MASCOTAS Y ADOPCIÓN (PÚBLICAS/CLIENTE)     
+    // RUTAS DE MASCOTAS Y ADOPCIÓN (PÚBLICAS / CLIENTE)     
     case 'catalogo_adopcion':
+    case 'cliente_adopcion':
         require_once 'controllers/MascotaController.php';
         $controller = new MascotaController();
         $controller->listarClienteAdopcion();
@@ -110,11 +105,44 @@ switch ($action) {
         require_once 'views/unir_refugio_view.php';
         break;
 
+    // GESTIÓN DE EVENTOS Y CALENDARIO (CRUD - REFUGIO / ADMIN)
     case 'calendario':
-        require_once 'views/calendario_view.php';
+        require_once 'controllers/EventoController.php';
+        $controller = new EventoController();
+        $controller->listarCalendario();
         break;
 
-    //  GESTIÓN DE MASCOTAS (ADMIN / REFUGIO)
+    case 'gestionar_eventos':
+        require_once 'controllers/EventoController.php';
+        $controller = new EventoController();
+        $controller->gestionarEventos();
+        break;
+
+    case 'guardar_evento':
+        require_once 'controllers/EventoController.php';
+        $controller = new EventoController();
+        $controller->guardar();
+        break;
+
+    case 'editar_evento':
+        require_once 'controllers/EventoController.php';
+        $controller = new EventoController();
+        $controller->editar();
+        break;
+
+    case 'actualizar_evento':
+        require_once 'controllers/EventoController.php';
+        $controller = new EventoController();
+        $controller->actualizar();
+        break;
+
+    case 'eliminar_evento':
+        require_once 'controllers/EventoController.php';
+        $controller = new EventoController();
+        $controller->eliminar();
+        break;
+
+    // GESTIÓN DE MASCOTAS (CRUD - ADMIN / REFUGIO)
     case 'guardar_mascota':
         require_once 'controllers/MascotaController.php';
         $controller = new MascotaController();
@@ -145,7 +173,7 @@ switch ($action) {
         $controller->listarAdmin();
         break;
 
-    //  PORTADA PRINCIPAL
+    // PORTADA PRINCIPAL
     case 'inicio':
     default:
         require_once 'controllers/MascotaController.php';

@@ -9,103 +9,181 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhiliaPet 🐾 Calendario de Fundaciones</title>
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/css/estilos.css">
+    <style>
+        .calendario-wrapper {
+            max-width: 900px;
+            margin: 30px auto 50px auto;
+            padding: 0 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .header-acciones {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .btn-volver-inicio {
+            background: #f3e8ff;
+            color: #6b21a8;
+            padding: 10px 20px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-volver-inicio:hover {
+            background: #e9d5ff;
+            transform: translateY(-2px);
+        }
+        .btn-gestion-refugio {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.25);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-gestion-refugio:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35);
+        }
+        /* Tarjetas con estilo idéntico al de los peluditos */
+        .card-jornada {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.08);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            border: 2px solid #ede9fe;
+            transition: all 0.3s ease;
+        }
+        .card-jornada:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.15);
+            border-color: #d8b4fe;
+        }
+        .badge-fecha {
+            background: #f3e8ff;
+            color: #6b21a8;
+            padding: 15px;
+            border-radius: 16px;
+            text-align: center;
+            min-width: 85px;
+            font-weight: bold;
+            border: 1px solid #ddd6fe;
+        }
+        .info-jornada {
+            flex-grow: 1;
+        }
+        .info-jornada h3 {
+            margin: 0 0 8px 0;
+            color: #1f2937;
+            font-size: 1.35rem;
+        }
+        .info-jornada p {
+            margin: 5px 0;
+            color: #4b5563;
+            font-size: 0.95rem;
+        }
+        .icono-decorativo {
+            font-size: 2.5rem;
+            opacity: 0.9;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- MARQUESINA -->
-    <div class="marquesina-contenedor">
-        <div class="marquesina-texto">
-            🐶 ¡ADOPTA, NO COMPRES! • Próxima jornada en C.C. Gran Estación este Sábado 🎉 • Vacunación gratuita con la Fundación Huellas de Amor 🐱 • ¡Ayúdanos a salvar vidas en Bogotá! ❤️ • 
-        </div>
-    </div>
+    <?php 
+        if (file_exists(__DIR__ . '/header.php')) {
+            include __DIR__ . '/header.php';
+        } elseif (file_exists(__DIR__ . '/../header.php')) {
+            include __DIR__ . '/../header.php';
+        }
+    ?>
 
-    <!-- ENCABEZADO -->
-    <header>
-        <div class="logo-animado">
-            <span>🐾</span> PhiliaPet <span class="heart">❤️</span>
-        </div>
-        <nav>
-            <a href="index.php?action=inicio" class="nav-link">Inicio</a>
-            <a href="index.php?action=catalogo_adopcion" class="nav-link" style="color: #047857; font-weight: bold;">🐾 Adopta</a>
-            
-            <div class="dropdown-fundaciones">
-                <a href="index.php?action=inicio#mascotas" class="nav-link">Fundaciones ▾</a>
-                <div class="dropdown-content">
-                    <a href="index.php?action=inicio#mascotas">Ver Listado</a>
-                    <a href="index.php?action=unir_refugio" style="color: var(--verde-borde) !important; font-weight: bold;">🐾 Unir mi Refugio</a>
-                </div>
-            </div>
+    <div class="calendario-wrapper">
+        
+        <!-- Botones de Acción Superior (Volver y Gestión) -->
+        <div class="header-acciones">
+            <a href="index.php?action=inicio" class="btn-volver-inicio">
+                ← Volver al Inicio
+            </a>
 
-            <a href="index.php?action=calendario" class="nav-link activo" style="font-weight: bold;">📅 Calendario</a>
-            <a href="index.php?action=inicio#donar" class="nav-link btn-nav-donar">🎁 Donar</a>
-
-            <?php if (isset($_SESSION['rol'])): ?>
-                <?php if ($_SESSION['rol'] === 'adoptante'): ?>
-                    <a href="index.php?action=perfil_adoptante" class="nav-link" style="background: #e0e7ff; color: #4338ca; padding: 6px 14px; border-radius: 12px; font-weight: bold;">👤 Mi Perfil</a>
-                <?php elseif ($_SESSION['rol'] === 'refugio'): ?>
-                    <a href="index.php?action=panel_refugio" class="nav-link" style="color: #4c1d95; font-weight: bold;">⚙️ Panel Refugio</a>
-                <?php elseif ($_SESSION['rol'] === 'admin'): ?>
-                    <a href="index.php?action=panel_admin" class="nav-link" style="color: #4c1d95; font-weight: bold;">🛡️ Panel Admin</a>
-                <?php endif; ?>
-                <a href="index.php?action=logout" class="nav-link" style="color: #ef4444; font-weight: 600;">Cerrar Sesión</a>
-            <?php else: ?>
-                <a href="index.php?action=registro" class="nav-link">Registrarse</a>
-                <a href="index.php?action=login" class="nav-link" style="color: #0284c7; font-weight: bold;">Ingresar</a>
+            <?php if (isset($_SESSION['rol']) && ($_SESSION['rol'] === 'refugio' || $_SESSION['rol'] === 'admin')): ?>
+                <a href="index.php?action=gestionar_eventos" class="btn-gestion-refugio">
+                    📅 Gestionar / Programar Jornadas
+                </a>
             <?php endif; ?>
-        </nav>
-    </header>
-
-    <!-- CONTENIDO PRINCIPAL: CALENDARIO DE JORNADAS -->
-    <section class="seccion-mascotas" style="padding: 40px 20px;">
-        <div class="titulo-decorado">
-            <h2>Agenda Oficial de Fundaciones 📅</h2>
-            <p class="subtitulo">Consulta las fechas, lugares y horarios donde las fundaciones aliadas de Bogotá estarán realizando jornadas de adopción y bienestar.</p>
         </div>
 
-        <div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px;">
-            
-            <!-- Evento 1 -->
-            <div class="tarjeta-peludito card-lavanda" style="padding: 25px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
-                <div>
-                    <span class="tag-propiedad color-azul" style="margin-bottom: 8px; display: inline-block;">Sábado, 06 JUN • 10:00 AM - 4:00 PM</span>
-                    <h3 style="color: #3b0764; margin-bottom: 8px;">Pasarela de Adopción y Charlas</h3>
-                    <p style="margin: 0; color: #4b5563;"><strong>🏢 Fundación:</strong> Huellas & Patitas</p>
-                    <p style="margin: 4px 0 0 0; color: #4b5563;">📍 <strong>Lugar:</strong> C.C. Plaza Central (Bogotá)</p>
-                </div>
-                <div style="font-size: 2.5em;">🐾</div>
-            </div>
-
-            <!-- Evento 2 -->
-            <div class="tarjeta-peludito card-menta" style="padding: 25px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
-                <div>
-                    <span class="tag-propiedad color-amarillo" style="margin-bottom: 8px; display: inline-block;">Sábado, 13 JUN • 9:00 AM - 3:00 PM</span>
-                    <h3 style="color: #064e3b; margin-bottom: 8px;">Jornada de Donación de Alimento y Cobijas</h3>
-                    <p style="margin: 0; color: #4b5563;"><strong>🏢 Fundación:</strong> Refugio Amigos de 4 Patas</p>
-                    <p style="margin: 4px 0 0 0; color: #4b5563;">📍 <strong>Lugar:</strong> Parque Simón Bolívar (Costado Salitre)</p>
-                </div>
-                <div style="font-size: 2.5em;">🎁</div>
-            </div>
-
-            <!-- Evento 3 -->
-            <div class="tarjeta-peludito card-lavanda" style="padding: 25px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
-                <div>
-                    <span class="tag-propiedad color-azul" style="margin-bottom: 8px; display: inline-block;">Sábado, 20 JUN • 8:30 AM - 2:00 PM</span>
-                    <h3 style="color: #3b0764; margin-bottom: 8px;">Jornada de Esterilización y Adopción</h3>
-                    <p style="margin: 0; color: #4b5563;"><strong>🏢 Fundación:</strong> Huellas de Amor</p>
-                    <p style="margin: 4px 0 0 0; color: #4b5563;">📍 <strong>Lugar:</strong> C.C. Gran Estación (Plazoleta principal)</p>
-                </div>
-                <div style="font-size: 2.5em;">🐱</div>
-            </div>
-
+        <div style="text-align: center; margin-bottom: 35px;">
+            <h2 style="color: #4c1d95; font-size: 2.2rem; margin-bottom: 8px;">Agenda Oficial de Fundaciones 📅</h2>
+            <p style="color: #6b7280; font-size: 1.05rem;">Consulta las fechas, lugares y horarios donde las fundaciones aliadas de Bogotá estarán realizando jornadas de adopción y bienestar.</p>
         </div>
-    </section>
 
-    <!-- FOOTER -->
-    <footer>
-        <p><strong>PhiliaPet</strong> — Transformando el futuro de los refugios de Bogotá 🐾</p>
-        <p>&copy; 2026 Conectando corazones peluditos con total responsabilidad.</p>
-    </footer>
+        <?php if (!empty($eventos)): ?>
+            <?php foreach ($eventos as $ev): ?>
+                <?php 
+                    $tipo = $ev['tipo_evento'] ?? ($ev['tipo'] ?? 'Adopción');
+                    $fechaTexto = $ev['fecha_hora'] ?? ($ev['fecha'] ?? ($ev['fecha_evento'] ?? 'Por definir'));
+                    $fundacionTexto = $ev['fundacion'] ?? ($ev['nombre_fundacion'] ?? 'Fundación Aliada');
+                    
+                    $icono = '🐾';
+                    $bordeIzq = '#a855f7'; // Morado elegante
+
+                    if (stripos($tipo, 'Vacunación') !== false) {
+                        $icono = '💉';
+                        $bordeIzq = '#0ea5e9'; // Azul celeste
+                    } elseif (stripos($tipo, 'Esterilización') !== false) {
+                        $icono = '🐱';
+                        $bordeIzq = '#10b981'; // Verde menta
+                    } elseif (stripos($tipo, 'Donación') !== false) {
+                        $icono = '🎁';
+                        $bordeIzq = '#f59e0b'; // Amarillo cálido
+                    }
+                ?>
+                <div class="card-jornada" style="border-left: 7px solid <?php echo $bordeIzq; ?>;">
+                    <div class="badge-fecha">
+                        <span style="font-size: 1.4rem; display: block;">🗓️</span>
+                        <span style="font-size: 0.75rem; text-transform: uppercase; display: block; margin-top: 3px; color: #7e22ce;">Jornada</span>
+                    </div>
+
+                    <div class="info-jornada">
+                        <div style="font-size: 0.85rem; font-weight: bold; color: #7c3aed; margin-bottom: 4px;">
+                            ✨ <?php echo htmlspecialchars($fechaTexto); ?>
+                        </div>
+                        <h3><?php echo htmlspecialchars($ev['titulo']); ?></h3>
+                        <p>🏢 <strong>Fundación:</strong> <?php echo htmlspecialchars($fundacionTexto); ?></p>
+                        <p>📍 <strong>Lugar:</strong> <?php echo htmlspecialchars($ev['lugar']); ?></p>
+                    </div>
+
+                    <div class="icono-decorativo">
+                        <?php echo $icono; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div style="text-align: center; background: white; padding: 45px; border-radius: 20px; color: #6b7280; box-shadow: 0 8px 25px rgba(139, 92, 246, 0.05); font-size: 1.1rem; border: 2px dashed #d8b4fe;">
+                <p style="margin:0;">No hay jornadas programadas en este momento. ¡Vuelve pronto! 🐾</p>
+            </div>
+        <?php endif; ?>
+    </div>
 
 </body>
 </html>

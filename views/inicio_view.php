@@ -475,6 +475,12 @@ if (session_status() === PHP_SESSION_NONE) {
                 <a href="index.php?action=registro" class="nav-link">Registrarse</a>
                 <a href="index.php?action=login" class="nav-link" style="color: #6d28d9; font-weight: bold;">Ingresar</a>
             <?php endif; ?>
+
+            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'refugio'): ?>
+                <a href="index.php?action=mascotas" class="nav-link" style="background: #ffb7b2; color: #fff; font-weight: bold;">
+                    🏡 Panel Refugio
+                </a>
+            <?php endif; ?>
         </nav>
     </header>
 

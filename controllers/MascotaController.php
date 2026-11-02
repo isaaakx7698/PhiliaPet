@@ -1,10 +1,33 @@
 <?php
-require_once 'config/database.php';
-require_once 'models/mascota.php';
+require_once __DIR__ . '/../models/mascota.php';
+require_once __DIR__ . '/../config/database.php';
 
 class MascotaController {
+    
+    public function listar() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
-    // Método para la portada pública
+        if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'refugio') {
+            header("Location: index.php?action=inicio");
+            exit();
+        }
+
+        $database = new Database();
+        $db = $database->getConnection();
+
+        $mascota = new Mascota($db);
+        $stmt = $mascota->obtenerDisponibles();
+        $mascotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        require_once __DIR__ . '/../views/mascotas_view.php';
+    }
+
+    public function listarAdmin() {
+        return $this->listar();
+    }
+
     public function listarInicio() {
         $database = new Database();
         $db = $database->getConnection();
@@ -13,19 +36,41 @@ class MascotaController {
         $stmt = $mascota->obtenerDisponibles();
         $mascotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        require_once 'views/inicio_view.php';
+        require_once __DIR__ . '/../views/inicio_view.php';
     }
 
-    // Método para la vista del CRUD (Admin)
-    public function listarAdmin() {
+    public function listarClienteAdopcion() {
         $database = new Database();
         $db = $database->getConnection();
 
         $mascota = new Mascota($db);
-        $stmt = $mascota->obtenerDisponibles();
+
+        $especie = $_GET['especie'] ?? null;
+        $edad = $_GET['edad'] ?? null;
+
+        $stmt = $mascota->obtenerFiltradas($especie, $edad);
         $mascotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        require_once 'views/mascotas_view.php';
+        require_once __DIR__ . '/../views/cliente_adopcion_view.php';
+    }
+
+    public function detalleAdopcion() {
+        if (isset($_GET['id'])) {
+            $database = new Database();
+            $db = $database->getConnection();
+
+            $mascota = new Mascota($db);
+            $peludito = $mascota->obtenerPorId($_GET['id']);
+
+            if ($peludito) {
+                require_once __DIR__ . '/../views/detalle_adopcion_view.php';
+            } else {
+                echo "<script>alert('Peludito no encontrado.'); window.location='index.php?action=cliente_adopcion';</script>";
+            }
+        } else {
+            header("Location: index.php?action=cliente_adopcion");
+            exit();
+        }
     }
 
     public function guardar() {
@@ -37,62 +82,129 @@ class MascotaController {
 
             $nombre          = $_POST['nombre'] ?? '';
             $especie         = $_POST['especie'] ?? '';
-            $edad_aproximada = $_POST['edad_aproximada'] ?? '';
+            
+            $etapa           = $_POST['edad_aproximada'] ?? '';
+            $detallada       = $_POST['edad_detallada'] ?? '';
+            $edad_aproximada = trim("$etapa ($detallada)");
+
             $historia        = $_POST['historia'] ?? '';
             $estado_salud    = $_POST['estado_salud'] ?? '';
             $estado_adopcion = $_POST['estado_adopcion'] ?? 'disponible';
-            $imagen          = $_POST['imagen'] ?? '';
+            $imagen          = '';
+
+            if (isset($_FILES['imagen_archivo']) && $_FILES['imagen_archivo']['error'] === UPLOAD_ERR_OK) {
+                $ext = strtolower(pathinfo($_FILES['imagen_archivo']['name'], PATHINFO_EXTENSION));
+                $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
+
+                if (in_array($ext, $extensionesPermitidas)) {
+                    $nombreArchivo = 'mascota_' . time() . '_' . rand(100, 999) . '.' . $ext;
+                    $directorioDestino = __DIR__ . '/../assets/img/';
+
+                    if (!file_exists($directorioDestino)) {
+                        mkdir($directorioDestino, 0777, true);
+                    }
+
+                    $rutaCompletaServidor = $directorioDestino . $nombreArchivo;
+                    $rutaParaBD = 'assets/img/' . $nombreArchivo;
+
+                    if (move_uploaded_file($_FILES['imagen_archivo']['tmp_name'], $rutaCompletaServidor)) {
+                        $imagen = $rutaParaBD;
+                    }
+                }
+            }
 
             if ($mascota->registrar($nombre, $especie, $edad_aproximada, $historia, $estado_salud, $estado_adopcion, $imagen)) {
                 header("Location: index.php?action=mascotas");
                 exit();
             } else {
-                echo "Error al guardar el peludito.";
+                echo "<script>alert('Error al guardar el peludito.'); window.history.back();</script>";
             }
         }
     }
 
-    // Carga los datos de la mascota en el formulario de edición
+    // Método para mostrar el formulario de edición con los datos actuales
     public function editar() {
         if (isset($_GET['id'])) {
             $database = new Database();
             $db = $database->getConnection();
-
             $mascota = new Mascota($db);
+            
             $peludito = $mascota->obtenerPorId($_GET['id']);
 
             if ($peludito) {
-                require_once 'views/editar_mascota_view.php';
+                require_once __DIR__ . '/../views/editar_mascota_view.php';
             } else {
-                echo "Mascota no encontrada.";
+                echo "<script>alert('Peludito no encontrado.'); window.location='index.php?action=mascotas';</script>";
             }
+        } else {
+            header("Location: index.php?action=mascotas");
+            exit();
         }
     }
 
-    // Procesa la actualización de los datos en la base de datos
+    // Método para procesar la actualización de datos
     public function actualizar() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_mascota'])) {
             $database = new Database();
             $db = $database->getConnection();
-
             $mascota = new Mascota($db);
 
-            $id_mascota      = $_POST['id_mascota'] ?? '';
+            $id_mascota      = $_POST['id_mascota'];
             $nombre          = $_POST['nombre'] ?? '';
             $especie         = $_POST['especie'] ?? '';
-            $edad_aproximada = $_POST['edad_aproximada'] ?? '';
+            
+            $etapa           = $_POST['edad_aproximada'] ?? '';
+            $detallada       = $_POST['edad_detallada'] ?? '';
+            $edad_aproximada = trim("$etapa ($detallada)");
+
             $historia        = $_POST['historia'] ?? '';
             $estado_salud    = $_POST['estado_salud'] ?? '';
-            $estado_adopcion = $_POST['estado_adopcion'] ?? 'disponible'; // <-- CAPTURANDO EL ESTADO
-            $imagen          = $_POST['imagen'] ?? '';
+            $estado_adopcion = $_POST['estado_adopcion'] ?? 'disponible';
+            
+            // Mantener imagen anterior por defecto
+            $peluditoActual  = $mascota->obtenerPorId($id_mascota);
+            $imagen          = $peluditoActual['imagen'] ?? '';
 
-            // ENVIANDO LOS 8 PARÁMETROS AL MODELO
+            // Si suben una foto nueva, la reemplazamos
+            if (isset($_FILES['imagen_archivo']) && $_FILES['imagen_archivo']['error'] === UPLOAD_ERR_OK) {
+                $ext = strtolower(pathinfo($_FILES['imagen_archivo']['name'], PATHINFO_EXTENSION));
+                $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
+
+                if (in_array($ext, $extensionesPermitidas)) {
+                    $nombreArchivo = 'mascota_' . time() . '_' . rand(100, 999) . '.' . $ext;
+                    $directorioDestino = __DIR__ . '/../assets/img/';
+
+                    if (!file_exists($directorioDestino)) {
+                        mkdir($directorioDestino, 0777, true);
+                    }
+
+                    $rutaCompletaServidor = $directorioDestino . $nombreArchivo;
+                    $rutaParaBD = 'assets/img/' . $nombreArchivo;
+
+                    if (move_uploaded_file($_FILES['imagen_archivo']['tmp_name'], $rutaCompletaServidor)) {
+                        $imagen = $rutaParaBD;
+                    }
+                }
+            }
+
             if ($mascota->actualizar($id_mascota, $nombre, $especie, $edad_aproximada, $historia, $estado_salud, $estado_adopcion, $imagen)) {
                 header("Location: index.php?action=mascotas");
                 exit();
             } else {
-                echo "Error al actualizar la mascota.";
+                echo "<script>alert('Error al actualizar el peludito.'); window.history.back();</script>";
             }
+        }
+    }
+
+    public function marcarAdoptado() {
+        if (isset($_GET['id'])) {
+            $database = new Database();
+            $db = $database->getConnection();
+            $mascota = new Mascota($db);
+            
+            $mascota->cambiarEstadoAdopcion($_GET['id'], 'adoptado');
+            header("Location: index.php?action=mascotas");
+            exit();
         }
     }
 
@@ -100,61 +212,11 @@ class MascotaController {
         if (isset($_GET['id'])) {
             $database = new Database();
             $db = $database->getConnection();
-
-            $mascota = new Mascota($db);
-
-            if ($mascota->eliminar($_GET['id'])) {
-                header("Location: index.php?action=mascotas");
-                exit();
-            } else {
-                echo "Error al eliminar la mascota.";
-            }
-        }
-    }
-
-    // Mostrar la vista de adopción para el cliente (solo los disponibles)
-    public function listarClienteAdopcion() {
-        $database = new Database();
-        $db = $database->getConnection();
-
-        $mascota = new Mascota($db);
-        $stmt = $mascota->obtenerDisponibles(); 
-        $mascotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        require_once 'views/cliente_adopcion_view.php';
-    }
-
-    // Mostrar detalles de una mascota para el proceso de adopción y contacto
-    public function detalleAdopcion() {
-        if (isset($_GET['id'])) {
-            $database = new Database();
-            $db = $database->getConnection();
-
-            $mascota = new Mascota($db);
-            $peludito = $mascota->obtenerPorId($_GET['id']);
-
-            if ($peludito) {
-                require_once 'views/detalle_adopcion_view.php';
-            } else {
-                echo "Peludito no encontrado.";
-            }
-        }
-    }
-
-    // Procesar la adopción (cambia el estado a 'adoptado' y lo oculta del catálogo)
-    public function procesarAdopcion() {
-        if (isset($_GET['id'])) {
-            $database = new Database();
-            $db = $database->getConnection();
-
             $mascota = new Mascota($db);
             
-            if ($mascota->cambiarEstadoAdopcion($_GET['id'], 'adoptado')) {
-                header("Location: index.php?action=catalogo_adopcion");
-                exit();
-            } else {
-                echo "Hubo un error al procesar la adopción.";
-            }
+            $mascota->eliminar($_GET['id']);
+            header("Location: index.php?action=mascotas");
+            exit();
         }
     }
 }
