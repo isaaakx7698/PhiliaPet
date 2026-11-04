@@ -25,7 +25,26 @@ class MascotaController {
     }
 
     public function listarAdmin() {
-        return $this->listar();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'refugio') {
+            header("Location: index.php?action=inicio");
+            exit();
+        }
+
+        $database = new Database();
+        $db = $database->getConnection();
+
+        $mascota = new Mascota($db);
+        // Usamos una consulta general para el panel de control del refugio
+        $query = "SELECT * FROM mascotas";
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        $mascotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        require_once __DIR__ . '/../views/mascotas_view.php';
     }
 
     public function listarInicio() {
@@ -33,7 +52,11 @@ class MascotaController {
         $db = $database->getConnection();
 
         $mascota = new Mascota($db);
-        $stmt = $mascota->obtenerDisponibles();
+        
+        // Modificamos la consulta para traer solo los 2 más recientes que estén disponibles
+        $query = "SELECT * FROM mascotas WHERE estado_adopcion = 'disponible' ORDER BY id_mascota DESC LIMIT 2";
+        $stmt = $db->prepare($query);
+        $stmt->execute();
         $mascotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         require_once __DIR__ . '/../views/inicio_view.php';
@@ -90,7 +113,7 @@ class MascotaController {
             $historia        = $_POST['historia'] ?? '';
             $estado_salud    = $_POST['estado_salud'] ?? '';
             $estado_adopcion = $_POST['estado_adopcion'] ?? 'disponible';
-            $imagen          = '';
+            $imagen          = ''; // Inicializamos vacía para exigir la foto real
 
             if (isset($_FILES['imagen_archivo']) && $_FILES['imagen_archivo']['error'] === UPLOAD_ERR_OK) {
                 $ext = strtolower(pathinfo($_FILES['imagen_archivo']['name'], PATHINFO_EXTENSION));
@@ -108,7 +131,7 @@ class MascotaController {
                     $rutaParaBD = 'assets/img/' . $nombreArchivo;
 
                     if (move_uploaded_file($_FILES['imagen_archivo']['tmp_name'], $rutaCompletaServidor)) {
-                        $imagen = $rutaParaBD;
+                        $imagen = $rutaParaBD; // Aquí queda guardada exactamente la foto que tú subiste
                     }
                 }
             }
@@ -144,12 +167,12 @@ class MascotaController {
 
     // Método para procesar la actualización de datos
     public function actualizar() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_mascota'])) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $database = new Database();
             $db = $database->getConnection();
-            $mascota = new Mascota($db);
+            $mascotaObj = new Mascota($db);
 
-            $id_mascota      = $_POST['id_mascota'];
+            $id_mascota      = $_POST['id_mascota'] ?? 0;
             $nombre          = $_POST['nombre'] ?? '';
             $especie         = $_POST['especie'] ?? '';
             
@@ -160,19 +183,20 @@ class MascotaController {
             $historia        = $_POST['historia'] ?? '';
             $estado_salud    = $_POST['estado_salud'] ?? '';
             $estado_adopcion = $_POST['estado_adopcion'] ?? 'disponible';
-            
-            // Mantener imagen anterior por defecto
-            $peluditoActual  = $mascota->obtenerPorId($id_mascota);
+
+            // 1. Primero obtenemos los datos actuales para no perder la foto vieja si no se sube una nueva
+            $peluditoActual  = $mascotaObj->obtenerPorId($id_mascota);
             $imagen          = $peluditoActual['imagen'] ?? '';
 
-            // Si suben una foto nueva, la reemplazamos
-            if (isset($_FILES['imagen_archivo']) && $_FILES['imagen_archivo']['error'] === UPLOAD_ERR_OK) {
+            // 2. Si el usuario seleccionó una foto nueva, la procesamos y guardamos
+           if (isset($_FILES['imagen_archivo']) && $_FILES['imagen_archivo']['error'] === UPLOAD_ERR_OK) {
                 $ext = strtolower(pathinfo($_FILES['imagen_archivo']['name'], PATHINFO_EXTENSION));
                 $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
 
                 if (in_array($ext, $extensionesPermitidas)) {
                     $nombreArchivo = 'mascota_' . time() . '_' . rand(100, 999) . '.' . $ext;
-                    $directorioDestino = __DIR__ . '/../assets/img/';
+                    // Usamos la ruta física exacta del servidor local
+                    $directorioDestino = $_SERVER['DOCUMENT_ROOT'] . '/PhiliaPet/assets/img/';
 
                     if (!file_exists($directorioDestino)) {
                         mkdir($directorioDestino, 0777, true);
@@ -182,12 +206,16 @@ class MascotaController {
                     $rutaParaBD = 'assets/img/' . $nombreArchivo;
 
                     if (move_uploaded_file($_FILES['imagen_archivo']['tmp_name'], $rutaCompletaServidor)) {
-                        $imagen = $rutaParaBD;
+                        $imagen = $rutaParaBD; 
+                    } else {
+                        // Si falla, imprimimos el error exacto de PHP para verlo en pantalla
+                        echo "<script>alert('Error de PHP al mover el archivo. Código de error: " . $_FILES['imagen_archivo']['error'] . "');</script>";
                     }
                 }
             }
 
-            if ($mascota->actualizar($id_mascota, $nombre, $especie, $edad_aproximada, $historia, $estado_salud, $estado_adopcion, $imagen)) {
+            // 3. Ejecutamos la actualización en la base de datos
+            if ($mascotaObj->actualizar($id_mascota, $nombre, $especie, $edad_aproximada, $historia, $estado_salud, $estado_adopcion, $imagen)) {
                 header("Location: index.php?action=mascotas");
                 exit();
             } else {

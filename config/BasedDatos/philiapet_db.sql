@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-10-2026 a las 16:42:52
+-- Tiempo de generación: 04-11-2026 a las 17:25:38
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.1.27
 
@@ -151,10 +151,9 @@ CREATE TABLE `mascotas` (
 --
 
 INSERT INTO `mascotas` (`id_mascota`, `id_fundacion`, `nombre`, `especie`, `edad_aproximada`, `historia`, `estado_salud`, `foto_ruta`, `estado_adopcion`, `imagen`, `fecha_ingreso`) VALUES
-(1, 2, 'Luna', 'perro', '5 meses', 'Encontrada en una zona escolar buscando refugio de la lluvia. Súper juguetona.', 'Sana y Lista para Amar', NULL, 'adoptado', 'https://tse3.mm.bing.net/th/id/OIP.NEddETWBjGgwOrZbP3w_OQHaHa?r=0&amp;rs=1&amp;pid=ImgDetMain&amp;o=7&amp;rm=3', '2026-06-10 16:18:53'),
-(2, 1, 'Rocco', 'perro', '2 años', 'Rescatado de un tejado abandonado. Le encanta ronronear mientras duerme en apartamentos.', 'Esterilizado y Sano', NULL, 'adoptado', 'https://tse3.mm.bing.net/th/id/OIP.yTm7PoxILJreZZ5cM7EYqwHaHa?r=0&amp;pid=ImgDet&amp;w=474&amp;h=474&amp;rs=1&amp;o=7&amp;rm=3', '2026-06-10 16:18:53'),
-(4, 1, 'pepita', 'gato', '1 mes', 'estaba abandonadita al lado de un rio porque es negra y nadie la quizó', 'le falta una patita', NULL, 'disponible', 'https://tse2.mm.bing.net/th/id/OIP.oxBf_f8fIiJYJ-lSuITvSgHaHK?r=0&amp;rs=1&amp;pid=ImgDetMain&amp;o=7&amp;rm=3', '2026-08-24 14:18:23'),
-(5, 1, 'mal', 'gato', '3 años', 'fue abandonada debajo de un arbol', 'muy sana ', NULL, 'disponible', 'https://tse1.mm.bing.net/th/id/OIP.KBvTTzVdjV7fRcey42Cd9AHaHa?r=0&amp;w=600&amp;h=600&amp;rs=1&amp;pid=ImgDetMain&amp;o=7&amp;rm=3', '2026-08-24 14:35:50');
+(11, 1, 'Beto', 'perro', 'adulto (adulto (9 años))', 'noc', 'castrado', NULL, 'disponible', 'assets/img/mascota_1793803628_717.webp', '2026-11-04 14:43:28'),
+(13, 1, 'goku', 'gato', 'adulto (10 años)', 'estaba haciendo jame jame jaaa y lo atrapé', 'nose', NULL, 'disponible', 'assets/img/mascota_1793803742_301.jpg', '2026-11-04 14:49:02'),
+(14, 1, 'bobi', 'perro', 'cachorro (9 meses)', 'nose', 'nose', NULL, 'disponible', 'assets/img/mascota_1793808890_106.jpeg', '2026-11-04 16:14:50');
 
 -- --------------------------------------------------------
 
@@ -222,7 +221,9 @@ INSERT INTO `usuarios` (`id`, `nombre`, `correo`, `password`, `rol`, `created_at
 (2, 'Administrador General', 'A.I.S.ADMINS@yahoo.com', '$2y$10$dQyH..1prjMJOzk48yJB0ONYbLw.apWwvgF/YGJfKQg8SIgDDuB5i', 'admin', '2026-09-23 15:51:59'),
 (6, 'isamar', 'isarrrr@gmail.com', '$2y$10$23sa/MX6G/kgf4/W.83omOPTJR6k1bIgABHLkzS2Nbb2cntvH1.ym', 'adoptante', '2026-09-28 13:35:20'),
 (7, 'Maria Ramirez', 'mramirez@gmail.com', '$2y$10$dQyH..1prjMJOzk48yJB0ONYbLw.apWwvgF/YGJfKQg8SIgDDuB5i', 'adoptante', '2026-10-26 13:31:22'),
-(8, 'marie', 'marie.lapro@gmail.com', '$2y$10$DiainZBDeY8DOd2qwbxmqeE58XrJ.pt.sgD2fup6XgXzQrNnPHOi6', 'adoptante', '2026-10-28 14:10:49');
+(8, 'marie', 'marie.lapro@gmail.com', '$2y$10$DiainZBDeY8DOd2qwbxmqeE58XrJ.pt.sgD2fup6XgXzQrNnPHOi6', 'adoptante', '2026-10-28 14:10:49'),
+(9, 'isa', 'samylunamia2022@gmail.com', '$2y$10$9zOwHWTkP9aDz07S74qd3Od4ospQNb/M0MHcr1RIFS/Fdj8/.rcVG', 'adoptante', '2026-11-04 14:51:24'),
+(10, 'fundacion isa', 'isafundacion@gmail.com', '$2y$10$bZR4.2xrUxeBDkC5gocYyOK18EeDsWvif3AmerqDUV9ZZa36JtJ4m', 'refugio', '2026-11-04 15:46:05');
 
 --
 -- Índices para tablas volcadas
@@ -328,7 +329,7 @@ ALTER TABLE `jornadas_eventos`
 -- AUTO_INCREMENT de la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
-  MODIFY `id_mascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_mascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `registro_donaciones`
@@ -346,7 +347,7 @@ ALTER TABLE `solicitudes_contacto`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Restricciones para tablas volcadas

@@ -42,7 +42,7 @@ class EventoController {
 
             $evento = new Evento($db);
 
-            $titulo      = $_POST['titulo'] ?? '';
+            $titulo       = $_POST['titulo'] ?? '';
             $tipo_evento = $_POST['tipo_evento'] ?? 'Adopción';
             $fecha_hora  = $_POST['fecha_hora'] ?? '';
             $fundacion   = $_POST['fundacion'] ?? '';

@@ -22,34 +22,34 @@ class Evento {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function registrar($titulo, $tipo_evento, $fecha_hora, $fundacion, $lugar) {
-        $query = "INSERT INTO " . $this->table_name . " (titulo, tipo_evento, fecha_hora, fundacion, lugar) 
-                  VALUES (:titulo, :tipo_evento, :fecha_hora, :fundacion, :lugar)";
+    public function registrar($titulo, $tipo, $fecha_hora, $fundacion, $lugar) {
+        $query = "INSERT INTO " . $this->table_name . " (titulo, tipo, fecha_hora, fundacion, lugar) 
+                  VALUES (:titulo, :tipo, :fecha_hora, :fundacion, :lugar)";
         
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindValue(":titulo", htmlspecialchars(strip_tags($titulo)));
-        $stmt->bindValue(":tipo_evento", htmlspecialchars(strip_tags($tipo_evento)));
-        $stmt->bindValue(":fecha_hora", htmlspecialchars(strip_tags($fecha_hora)));
-        $stmt->bindValue(":fundacion", htmlspecialchars(strip_tags($fundacion)));
-        $stmt->bindValue(":lugar", htmlspecialchars(strip_tags($lugar)));
+        $stmt->bindValue(":titulo", $titulo);
+        $stmt->bindValue(":tipo", $tipo);
+        $stmt->bindValue(":fecha_hora", $fecha_hora);
+        $stmt->bindValue(":fundacion", $fundacion);
+        $stmt->bindValue(":lugar", $lugar);
 
         return $stmt->execute();
     }
 
-    public function actualizar($id, $titulo, $tipo_evento, $fecha_hora, $fundacion, $lugar) {
+    public function actualizar($id, $titulo, $tipo, $fecha_hora, $fundacion, $lugar) {
         $query = "UPDATE " . $this->table_name . " 
-                  SET titulo = :titulo, tipo_evento = :tipo_evento, fecha_hora = :fecha_hora, fundacion = :fundacion, lugar = :lugar 
+                  SET titulo = :titulo, tipo = :tipo, fecha_hora = :fecha_hora, fundacion = :fundacion, lugar = :lugar 
                   WHERE id_evento = :id OR id = :id";
         
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindValue(":id", htmlspecialchars(strip_tags($id)));
-        $stmt->bindValue(":titulo", htmlspecialchars(strip_tags($titulo)));
-        $stmt->bindValue(":tipo_evento", htmlspecialchars(strip_tags($tipo_evento)));
-        $stmt->bindValue(":fecha_hora", htmlspecialchars(strip_tags($fecha_hora)));
-        $stmt->bindValue(":fundacion", htmlspecialchars(strip_tags($fundacion)));
-        $stmt->bindValue(":lugar", htmlspecialchars(strip_tags($lugar)));
+        $stmt->bindValue(":id", $id);
+        $stmt->bindValue(":titulo", $titulo);
+        $stmt->bindValue(":tipo", $tipo);
+        $stmt->bindValue(":fecha_hora", $fecha_hora);
+        $stmt->bindValue(":fundacion", $fundacion);
+        $stmt->bindValue(":lugar", $lugar);
 
         return $stmt->execute();
     }

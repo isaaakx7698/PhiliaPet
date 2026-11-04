@@ -209,6 +209,8 @@ if (!isset($_SESSION['rol']) || ($_SESSION['rol'] !== 'refugio' && $_SESSION['ro
                             <td>
                                 <?php if (!empty($m['imagen'])): ?>
                                     <img src="<?php echo htmlspecialchars($m['imagen']); ?>" alt="Foto" style="width: 45px; height: 45px; object-fit: cover; border-radius: 8px;">
+                                <?php elseif (!empty($m['foto_ruta'])): ?>
+                                    <img src="<?php echo htmlspecialchars($m['foto_ruta']); ?>" alt="Foto" style="width: 45px; height: 45px; object-fit: cover; border-radius: 8px;">
                                 <?php else: ?>
                                     🐾
                                 <?php endif; ?>

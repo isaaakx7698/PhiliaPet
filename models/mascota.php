@@ -25,16 +25,22 @@ class Mascota {
         }
 
         if (!empty($edad_aproximada)) {
-            // Usamos LIKE para que detecte la categoría (ej: "joven") dentro del texto combinado
-            $query .= " AND edad_aproximada LIKE :edad_aproximada";
-            $params[':edad_aproximada'] = '%' . $edad_aproximada . '%';
+            $edad_lower = strtolower($edad_aproximada);
+            // Mapeamos los botones de la vista con los textos reales de la base de datos
+            if (strpos($edad_lower, 'adulto') !== false) {
+                $query .= " AND edad_aproximada LIKE '%año%'";
+            } elseif (strpos($edad_lower, 'cachorro') !== false) {
+                $query .= " AND edad_aproximada LIKE '%mes%'";
+            } else {
+                $query .= " AND edad_aproximada LIKE :edad_aproximada";
+                $params[':edad_aproximada'] = '%' . $edad_aproximada . '%';
+            }
         }
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute($params);
         return $stmt;
     }
-
     public function registrar($nombre, $especie, $edad_aproximada, $historia, $estado_salud, $estado_adopcion = 'disponible', $imagen = '', $id_fundacion = 1) {
         $query = "INSERT INTO " . $this->table_name . " 
                  (id_fundacion, nombre, especie, edad_aproximada, historia, estado_salud, estado_adopcion, imagen) 
