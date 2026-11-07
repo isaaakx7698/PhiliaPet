@@ -344,41 +344,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN: Mascotas Recientemente Publicadas -->
-        <div style="text-align: center; margin-bottom: 25px;">
-            <h2 style="font-size: 1.5rem; color: #2d2d2d; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                📷 Mascotas Recientemente Publicadas
-            </h2>
-        </div>
-
-        <div class="grid-mascotas" style="margin-bottom: 40px;">
-            <!-- Mascota 1 -->
-            <div class="card-mascota-reciente">
-                <div class="foto-mascota-reciente">
-                    <span style="font-size: 3rem;">🐱</span>
-                </div>
-                <h4 style="font-size: 1.1rem; margin: 5px 0 2px 0; color: #2d2d2d;">Luna</h4>
-                <p style="font-size: 0.8rem; color: #666; margin: 0;">Patitas Felices</p>
-            </div>
-
-            <!-- Mascota 2 -->
-            <div class="card-mascota-reciente">
-                <div class="foto-mascota-reciente">
-                    <span style="font-size: 3rem;">🐶</span>
-                </div>
-                <h4 style="font-size: 1.1rem; margin: 5px 0 2px 0; color: #2d2d2d;">Milo</h4>
-                <p style="font-size: 0.8rem; color: #666; margin: 0;">Huellitas de Amor</p>
-            </div>
-
-            <!-- Mascota 3 -->
-            <div class="card-mascota-reciente">
-                <div class="foto-mascota-reciente">
-                    <span style="font-size: 3rem;">🐶</span>
-                </div>
-                <h4 style="font-size: 1.1rem; margin: 5px 0 2px 0; color: #2d2d2d;">Max</h4>
-                <p style="font-size: 0.8rem; color: #666; margin: 0;">Peluditos Bogotá</p>
-            </div>
-        </div>
+    
 
     </div>
 

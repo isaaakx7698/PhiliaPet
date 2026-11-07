@@ -19,20 +19,24 @@ class Mascota {
         
         $params = [];
 
-        if (!empty($especie)) {
-            $query .= " AND especie = :especie";
-            $params[':especie'] = $especie;
+        // 1. Filtro estricto por especie (si viene y no es 'todos')
+        if (!empty($especie) && strtolower($especie) !== 'todos') {
+            $query .= " AND LOWER(especie) = LOWER(:especie)";
+            $params[':especie'] = trim($especie);
         }
 
-        if (!empty($edad_aproximada)) {
-            $edad_lower = strtolower($edad_aproximada);
-            // Mapeamos los botones de la vista con los textos reales de la base de datos
-            if (strpos($edad_lower, 'adulto') !== false) {
-                $query .= " AND edad_aproximada LIKE '%año%'";
-            } elseif (strpos($edad_lower, 'cachorro') !== false) {
-                $query .= " AND edad_aproximada LIKE '%mes%'";
+        // 2. Filtro estricto por categoría de edad (Cachorro, Joven, Adulto)
+        if (!empty($edad_aproximada) && strtolower($edad_aproximada) !== 'todos') {
+            $edad_lower = strtolower(trim($edad_aproximada));
+            
+            if (strpos($edad_lower, 'cachorro') !== false) {
+                $query .= " AND (LOWER(edad_aproximada) LIKE '%cachorro%' OR LOWER(edad_aproximada) LIKE '%mes%')";
+            } elseif (strpos($edad_lower, 'joven') !== false) {
+                $query .= " AND LOWER(edad_aproximada) LIKE '%joven%'";
+            } elseif (strpos($edad_lower, 'adulto') !== false) {
+                $query .= " AND LOWER(edad_aproximada) LIKE '%adulto%'";
             } else {
-                $query .= " AND edad_aproximada LIKE :edad_aproximada";
+                $query .= " AND LOWER(edad_aproximada) LIKE :edad_aproximada";
                 $params[':edad_aproximada'] = '%' . $edad_aproximada . '%';
             }
         }
@@ -41,6 +45,7 @@ class Mascota {
         $stmt->execute($params);
         return $stmt;
     }
+
     public function registrar($nombre, $especie, $edad_aproximada, $historia, $estado_salud, $estado_adopcion = 'disponible', $imagen = '', $id_fundacion = 1) {
         $query = "INSERT INTO " . $this->table_name . " 
                  (id_fundacion, nombre, especie, edad_aproximada, historia, estado_salud, estado_adopcion, imagen) 
@@ -112,7 +117,7 @@ class Mascota {
         $query = "DELETE FROM " . $this->table_name . " WHERE id_mascota = :id_mascota";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":id_mascota", $id_mascota);
-        return $stmt->execute();
+        $stmt->execute();
     }
 
     public function cambiarEstadoAdopcion($id_mascota, $nuevo_estado = 'adoptado') {
@@ -123,7 +128,6 @@ class Mascota {
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":estado_adopcion", $nuevo_estado);
         $stmt->bindParam(":id_mascota", $id_mascota);
-
         return $stmt->execute();
     }
 }

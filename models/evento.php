@@ -15,21 +15,21 @@ class Evento {
     }
 
     public function obtenerPorId($id) {
-        $query = "SELECT * FROM " . $this->table_name . " WHERE id_evento = :id OR id = :id LIMIT 0,1";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id_evento = :id LIMIT 0,1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":id", $id);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function registrar($titulo, $tipo, $fecha_hora, $fundacion, $lugar) {
-        $query = "INSERT INTO " . $this->table_name . " (titulo, tipo, fecha_hora, fundacion, lugar) 
-                  VALUES (:titulo, :tipo, :fecha_hora, :fundacion, :lugar)";
+    public function registrar($titulo, $tipo_evento, $fecha_hora, $fundacion, $lugar) {
+        $query = "INSERT INTO " . $this->table_name . " (titulo, tipo_evento, fecha_hora, fundacion, lugar) 
+                  VALUES (:titulo, :tipo_evento, :fecha_hora, :fundacion, :lugar)";
         
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindValue(":titulo", $titulo);
-        $stmt->bindValue(":tipo", $tipo);
+        $stmt->bindValue(":tipo_evento", $tipo_evento);
         $stmt->bindValue(":fecha_hora", $fecha_hora);
         $stmt->bindValue(":fundacion", $fundacion);
         $stmt->bindValue(":lugar", $lugar);
@@ -37,16 +37,16 @@ class Evento {
         return $stmt->execute();
     }
 
-    public function actualizar($id, $titulo, $tipo, $fecha_hora, $fundacion, $lugar) {
+    public function actualizar($id, $titulo, $tipo_evento, $fecha_hora, $fundacion, $lugar) {
         $query = "UPDATE " . $this->table_name . " 
-                  SET titulo = :titulo, tipo = :tipo, fecha_hora = :fecha_hora, fundacion = :fundacion, lugar = :lugar 
-                  WHERE id_evento = :id OR id = :id";
+                  SET titulo = :titulo, tipo_evento = :tipo_evento, fecha_hora = :fecha_hora, fundacion = :fundacion, lugar = :lugar 
+                  WHERE id_evento = :id";
         
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindValue(":id", $id);
         $stmt->bindValue(":titulo", $titulo);
-        $stmt->bindValue(":tipo", $tipo);
+        $stmt->bindValue(":tipo_evento", $tipo_evento);
         $stmt->bindValue(":fecha_hora", $fecha_hora);
         $stmt->bindValue(":fundacion", $fundacion);
         $stmt->bindValue(":lugar", $lugar);
@@ -55,7 +55,7 @@ class Evento {
     }
 
     public function eliminar($id) {
-        $query = "DELETE FROM " . $this->table_name . " WHERE id_evento = :id OR id = :id";
+        $query = "DELETE FROM " . $this->table_name . " WHERE id_evento = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":id", $id);
         return $stmt->execute();

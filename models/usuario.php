@@ -68,5 +68,17 @@ class Usuario {
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$nombre, $correo, $descripcion, $foto, $id]);
     }
+
+    // Registra la actividad usando la misma conexión del modelo
+    public function registrarActividad($modulo, $descripcion, $estado = 'Verificado') {
+        try {
+            $sql = "INSERT INTO actividad_log (modulo, descripcion, estado) VALUES (?, ?, ?)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$modulo, $descripcion, $estado]);
+        } catch (Exception $e) {
+            // Si hay algún error, lo guardamos en el log de errores de PHP para depurar
+            error_log("Error al registrar actividad: " . $e->getMessage());
+        }
+    }
 }
 ?>

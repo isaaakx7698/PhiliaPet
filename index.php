@@ -63,6 +63,27 @@ switch ($action) {
             header("Location: index.php?action=inicio");
             exit();
         }
+        
+        $actividades = [];
+        if (file_exists('config/database.php')) {
+            require_once 'config/database.php';
+        }
+        
+        $pdo = $conn ?? $conexion ?? null;
+
+        if ($pdo) {
+            try {
+                $stmt = $pdo->query("SELECT * FROM actividad_log ORDER BY fecha DESC LIMIT 10");
+                $actividades = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                // 🔍 PRUEBA DE DEPURACIÓN: Descomenta la siguiente línea si quieres ver los datos en bruto arriba del todo:
+                // echo "<pre>"; print_r($actividades); echo "</pre>"; exit();
+
+            } catch (Exception $e) {
+                $actividades = [];
+            }
+        }
+
         require_once 'views/panel_admin_view.php';
         break;
 
@@ -81,7 +102,12 @@ switch ($action) {
         require_once 'views/fundaciones_view.php';
         break;
 
-    // RUTAS DE MASCOTAS Y ADOPCIÓN (PÚBLICAS / CLIENTE)     
+    // RUTA DE DONACIONES AGREGADA AQUí
+    case 'donar':
+        require_once 'views/donaciones_view.php';
+        break;
+
+    // RUTAS DE MASCOTAS Y ADOPCIÓN (PÚBLICAS / CLIENTE)    
     case 'catalogo_adopcion':
     case 'cliente_adopcion':
         require_once 'controllers/MascotaController.php';

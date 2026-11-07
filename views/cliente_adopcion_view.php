@@ -45,13 +45,21 @@ if (session_status() === PHP_SESSION_NONE) {
             padding: 20px;
             border-radius: 20px;
             text-align: center;
-            max-width: 700px;
+            max-width: 800px;
             margin: 0 auto 35px auto;
             box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .grupo-filtros {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
         }
         .filtros-container a {
             display: inline-block;
-            margin: 5px 8px;
             padding: 8px 18px;
             border-radius: 20px;
             text-decoration: none;
@@ -84,7 +92,6 @@ if (session_status() === PHP_SESSION_NONE) {
         .tarjeta-mascota:hover {
             transform: translateY(-5px);
         }
-        /* Contenedor de imagen más alto y con fondo elegante para que la foto respire */
         .contenedor-imagen {
             width: 100%;
             height: 280px;
@@ -97,7 +104,7 @@ if (session_status() === PHP_SESSION_NONE) {
         .contenedor-imagen img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Cambia a 'contain' si prefieres que se vea toda la foto completa sin recortar nada */
+            object-fit: cover;
         }
         .info-tarjeta {
             padding: 20px;
@@ -164,13 +171,30 @@ if (session_status() === PHP_SESSION_NONE) {
         <a href="index.php?action=inicio" class="btn-volver">← Volver al Inicio</a>
     </div>
 
-    <!-- Filtros por etapa de vida -->
+    <?php 
+        // Capturamos lo que esté seleccionado actualmente en la URL
+        $especieActual = $_GET['especie'] ?? 'todos';
+        $edadActual = $_GET['edad'] ?? 'todos';
+    ?>
+
+    <!-- CONTENEDOR DE FILTROS UNIFICADO Y ESTILIZADO -->
     <div class="filtros-container">
-        <p style="margin-top:0; font-weight:bold; color:#9a3412;">🐶 Elige la etapa de tu peludito:</p>
-        <a href="index.php?action=cliente_adopcion" class="<?php echo empty($_GET['edad']) ? 'activo' : ''; ?>">Todos</a>
-        <a href="index.php?action=cliente_adopcion&edad=cachorro" class="<?php echo (isset($_GET['edad']) && $_GET['edad'] === 'cachorro') ? 'activo' : ''; ?>">🍼 Cachorros</a>
-        <a href="index.php?action=cliente_adopcion&edad=joven" class="<?php echo (isset($_GET['edad']) && $_GET['edad'] === 'joven') ? 'activo' : ''; ?>">⭐ Jóvenes</a>
-        <a href="index.php?action=cliente_adopcion&edad=adulto" class="<?php echo (isset($_GET['edad']) && $_GET['edad'] === 'adulto') ? 'activo' : ''; ?>">🐾 Adultos</a>
+        <!-- FILTROS DE ESPECIE (Mantienen la edad actual) -->
+        <div class="grupo-filtros">
+            <span style="font-weight: bold; align-self: center; margin-right: 10px; color: #9a3412;">Especie:</span>
+            <a href="index.php?action=cliente_adopcion&especie=todos&edad=<?php echo htmlspecialchars($edadActual); ?>" class="<?php echo ($especieActual == 'todos') ? 'activo' : ''; ?>">Todos</a>
+            <a href="index.php?action=cliente_adopcion&especie=perro&edad=<?php echo htmlspecialchars($edadActual); ?>" class="<?php echo ($especieActual == 'perro') ? 'activo' : ''; ?>">Perros</a>
+            <a href="index.php?action=cliente_adopcion&especie=gato&edad=<?php echo htmlspecialchars($edadActual); ?>" class="<?php echo ($especieActual == 'gato') ? 'activo' : ''; ?>">Gatos</a>
+        </div>
+
+        <!-- FILTROS DE EDAD / ETAPA (Mantienen la especie actual) -->
+        <div class="grupo-filtros">
+            <span style="font-weight: bold; align-self: center; margin-right: 10px; color: #9a3412;">Etapa:</span>
+            <a href="index.php?action=cliente_adopcion&especie=<?php echo htmlspecialchars($especieActual); ?>&edad=todos" class="<?php echo ($edadActual == 'todos') ? 'activo' : ''; ?>">Todas</a>
+            <a href="index.php?action=cliente_adopcion&especie=<?php echo htmlspecialchars($especieActual); ?>&edad=cachorro" class="<?php echo ($edadActual == 'cachorro') ? 'activo' : ''; ?>">Cachorros</a>
+            <a href="index.php?action=cliente_adopcion&especie=<?php echo htmlspecialchars($especieActual); ?>&edad=joven" class="<?php echo ($edadActual == 'joven') ? 'activo' : ''; ?>">Jóvenes</a>
+            <a href="index.php?action=cliente_adopcion&especie=<?php echo htmlspecialchars($especieActual); ?>&edad=adulto" class="<?php echo ($edadActual == 'adulto') ? 'activo' : ''; ?>">Adultos</a>
+        </div>
     </div>
 
     <!-- Catálogo de Mascotas -->
@@ -187,7 +211,6 @@ if (session_status() === PHP_SESSION_NONE) {
                     </div>
 
                     <div class="info-tarjeta">
-                        <!-- Nombre de la mascota limpio y a la izquierda -->
                         <h3 class="nombre-mascota">
                             ✨ <?php echo htmlspecialchars($m['nombre']); ?>
                         </h3>
@@ -205,7 +228,6 @@ if (session_status() === PHP_SESSION_NONE) {
                             </span>
                         </div>
 
-                        <!-- Estado de salud abajo -->
                         <div class="salud-texto">
                             🩺 <strong>Salud:</strong> <?php echo htmlspecialchars($m['estado_salud']); ?>
                         </div>
@@ -228,4 +250,4 @@ if (session_status() === PHP_SESSION_NONE) {
     </div>
 
 </body>
-</html>sss
+</html>

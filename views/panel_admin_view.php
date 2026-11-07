@@ -17,27 +17,177 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
     <title>Panel de Administración - PhiliaPet 🛡️</title>
     <link rel="stylesheet" href="assets/style.css">
     <style>
-        .admin-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .admin-header { background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; padding: 30px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2); }
-        .admin-header h1 { margin: 0 0 10px 0; font-size: 2.2rem; }
-        .admin-header p { margin: 0; opacity: 0.9; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
-        .stat-card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid #4f46e5; }
-        .stat-card h3 { margin: 0 0 10px 0; color: #64748b; font-size: 1rem; }
-        .stat-card .numero { font-size: 2rem; font-weight: bold; color: #1e293b; margin: 0; }
-        .admin-seccion { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
-        .admin-seccion h2 { margin-top: 0; color: #1e293b; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; }
-        .tabla-admin { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .tabla-admin th, .tabla-admin td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #e2e8f0; }
-        .tabla-admin th { background: #f8fafc; color: #475569; font-weight: 600; }
-        .btn-accion { padding: 6px 12px; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: bold; display: inline-block; margin-right: 5px; }
-        .btn-editar { background: #e0e7ff; color: #4338ca; }
-        .btn-eliminar { background: #fee2e2; color: #991b1b; }
-        .btn-volver { display: inline-block; margin-bottom: 20px; color: #4f46e5; text-decoration: none; font-weight: bold; }
-        .btn-volver:hover { text-decoration: underline; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #1e293b;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .btn-volver {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        .btn-volver:hover {
+            text-decoration: underline;
+            color: #4338ca;
+        }
+
+        /* ENCABEZADO */
+        .admin-header {
+            background: linear-gradient(135deg, #4f46e5, #3b82f6);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2);
+        }
+
+        .admin-header h1 {
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+
+        .admin-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        /* TARJETAS DE ESTADÍSTICAS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid #4f46e5;
+        }
+
+        .stat-card.sistema { border-left-color: #4f46e5; }
+        .stat-card.rango { border-left-color: #10b981; }
+        .stat-card.ciudad { border-left-color: #f59e0b; }
+
+        .stat-card h3 {
+            margin-bottom: 10px;
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .stat-card .numero {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .stat-card.sistema .numero { color: #4f46e5; }
+        .stat-card.rango .numero { color: #10b981; }
+        .stat-card.ciudad .numero { color: #f59e0b; }
+
+        /* SECCIONES GENERALES */
+        .admin-seccion {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .admin-seccion h2 {
+            margin-top: 0;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .admin-seccion p {
+            color: #64748b;
+            margin-top: 10px;
+        }
+
+        /* BOTONES DE ACCIÓN GLOBAL */
+        .acciones-wrapper {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-accion {
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-accion:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .btn-gestion-mascotas { background: #e0e7ff; color: #4338ca; }
+        .btn-catalogo { background: #d1fae5; color: #065f46; }
+        .btn-solicitudes { background: #fef3c7; color: #92400e; }
+
+        /* TABLA DE ACTIVIDAD */
+        .tabla-admin {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .tabla-admin th, 
+        .tabla-admin td {
+            padding: 14px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        .tabla-admin th {
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .badge-estado {
+            font-weight: bold;
+        }
+
+        .badge-verde { color: #10b981; }
+        .badge-azul { color: #3b82f6; }
     </style>
 </head>
-<body style="background-color: #f8fafc;">
+<body>
 
     <div class="admin-container">
         <a href="index.php?action=inicio" class="btn-volver">← Volver al Inicio de PhiliaPet</a>
@@ -50,17 +200,17 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
 
         <!-- TARJETAS DE ESTADÍSTICAS RÁPIDAS -->
         <div class="stats-grid">
-            <div class="stat-card" style="border-left-color: #4f46e5;">
+            <div class="stat-card sistema">
                 <h3>🐾 Estado del Sistema</h3>
-                <p class="numero" style="font-size: 1.5rem; color: #4f46e5;">100% Activo ✨</p>
+                <p class="numero">100% Activo ✨</p>
             </div>
-            <div class="stat-card" style="border-left-color: #10b981;">
+            <div class="stat-card rango">
                 <h3>👤 Tu Rango Actual</h3>
-                <p class="numero" style="font-size: 1.5rem; color: #10b981;">Administradora</p>
+                <p class="numero">Administradora</p>
             </div>
-            <div class="stat-card" style="border-left-color: #f59e0b;">
+            <div class="stat-card ciudad">
                 <h3>📍 Ciudad Principal</h3>
-                <p class="numero" style="font-size: 1.5rem; color: #f59e0b;">Bogotá D.C.</p>
+                <p class="numero">Bogotá D.C.</p>
             </div>
         </div>
 
@@ -68,10 +218,10 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
         <div class="admin-seccion">
             <h2>⚙️ Acciones y Gestión Global</h2>
             <p>Como administradora, puedes supervisar las secciones críticas de la red de apoyo:</p>
-            <div style="margin-top: 20px; display: flex; gap: 15px; flex-wrap: wrap;">
-                <a href="index.php?action=mascotas" class="btn-accion btn-editar" style="padding: 12px 20px; font-size: 1rem;">🐶 Gestionar / Editar Todas las Mascotas</a>
-                <a href="index.php?action=catalogo_adopcion" class="btn-accion" style="background: #d1fae5; color: #065f46; padding: 12px 20px; font-size: 1rem;">👁️ Ver Catálogo Público</a>
-                <a href="index.php?action=unir_refugio" class="btn-accion" style="background: #fef3c7; color: #92400e; padding: 12px 20px; font-size: 1rem;">🏢 Solicitudes de Refugios</a>
+            <div class="acciones-wrapper">
+                <a href="index.php?action=mascotas" class="btn-accion btn-gestion-mascotas">🐶 Gestionar / Editar Todas las Mascotas</a>
+                <a href="index.php?action=catalogo_adopcion" class="btn-accion btn-catalogo">👁️ Ver Catálogo Público</a>
+                <a href="index.php?action=unir_refugio" class="btn-accion btn-solicitudes">🏢 Solicitudes de Refugios</a>
             </div>
         </div>
 
@@ -90,24 +240,22 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Hoy, 09:00 AM</td>
-                        <td>Seguridad</td>
-                        <td>Inicio de sesión exitoso de la cuenta Administradora (Isa).</td>
-                        <td><span style="color: #10b981; font-weight: bold;">✔ Verificado</span></td>
-                    </tr>
-                    <tr>
-                        <td>Junio 2026</td>
-                        <td>Eventos</td>
-                        <td>Actualización de agenda masiva en C.C. Gran Estación y Parque Simón Bolívar.</td>
-                        <td><span style="color: #3b82f6; font-weight: bold;">ℹ️ Publicado</span></td>
-                    </tr>
-                    <tr>
-                        <td>Sistema</td>
-                        <td>Base de Datos</td>
-                        <td>Conexión establecida correctamente con el servidor local de PhiliaPet.</td>
-                        <td><span style="color: #10b981; font-weight: bold;">✔ Estable</span></td>
-                    </tr>
+                    <?php if (!empty($actividades)): ?>
+                        <?php foreach ($actividades as $act): ?>
+                            <tr>
+                                <td><?php echo date('d M Y, h:i A', strtotime($act['fecha'])); ?></td>
+                                <td><?php echo htmlspecialchars($act['modulo']); ?></td>
+                                <td><?php echo htmlspecialchars($act['descripcion']); ?></td>
+                                <td><span class="badge-estado badge-verde">✔ <?php echo htmlspecialchars($act['estado']); ?></span></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: #64748b; padding: 20px;">
+                                No hay actividad reciente registrada todavía. 🐾
+                            </td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>

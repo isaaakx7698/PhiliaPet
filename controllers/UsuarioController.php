@@ -37,6 +37,9 @@ class UsuarioController {
                 $resultado = $usuario->registrar($nombre, $correo, $password, $codigo_refugio);
 
                 if ($resultado['exito']) {
+                    // 🌟 CORREGIDO: Usamos la instancia creada '$usuario' para registrar la actividad correctamente
+                    $usuario->registrarActividad('Usuarios', "Nuevo usuario registrado: " . $nombre, 'Verificado');
+
                     echo "<script>
                         alert('" . $resultado['mensaje'] . "');
                         window.location.href = 'index.php?action=login';
@@ -71,8 +74,10 @@ class UsuarioController {
                     $_SESSION['correo'] = $usuario['correo'];
                     $_SESSION['rol'] = $usuario['rol'];
                     
-                    // CORREGIDO: Buscamos de forma segura sin importar el nombre de la columna en la BD
                     $_SESSION['foto'] = $usuario['foto'] ?? $usuario['imagen'] ?? $usuario['foto_perfil'] ?? null;
+
+                    // 🌟 CORREGIDO: Usamos la instancia '$usuarioModel'
+                    $usuarioModel->registrarActividad('Seguridad', "Inicio de sesión de: " . $usuario['nombre'] . " ({$usuario['rol']})", 'Verificado');
 
                     if ($usuario['rol'] === 'admin') {
                         header("Location: index.php?action=panel_admin");
@@ -106,7 +111,6 @@ class UsuarioController {
         $usuario = $usuarioModel->obtenerPorId($_SESSION['usuario_id']);
 
         if ($usuario) {
-            // CORREGIDO: Lectura segura para evitar el error de Undefined index
             $_SESSION['foto'] = $usuario['foto'] ?? $usuario['imagen'] ?? $usuario['foto_perfil'] ?? '';
             $_SESSION['nombre'] = $usuario['nombre'] ?? '';
             $_SESSION['correo'] = $usuario['correo'] ?? '';
@@ -132,13 +136,16 @@ class UsuarioController {
             $correo = trim($_POST['correo']);
             $descripcion = trim($_POST['descripcion'] ?? '');
             
+            $localidad = trim($_POST['localidad'] ?? '');
+            $telefono = trim($_POST['telefono'] ?? '');
+            $instagram = trim($_POST['instagram'] ?? '');
+            $facebook = trim($_POST['facebook'] ?? '');
+            
             $usuarioModel = new Usuario();
             $usuarioActual = $usuarioModel->obtenerPorId($usuario_id);
             
-            // CORREGIDO: Lectura segura de la foto actual
             $ruta_foto = $usuarioActual['foto'] ?? $usuarioActual['imagen'] ?? $usuarioActual['foto_perfil'] ?? null;
 
-            // Procesar la subida de imagen
             if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
                 $ext = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
                 $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
@@ -159,12 +166,15 @@ class UsuarioController {
                 }
             }
 
-            $exito = $usuarioModel->actualizar($usuario_id, $nombre, $correo, $descripcion, $ruta_foto);
+            $exito = $usuarioModel->actualizarPerfilCompleto($usuario_id, $nombre, $correo, $descripcion, $localidad, $telefono, $instagram, $facebook, $ruta_foto);
 
             if ($exito) {
                 $_SESSION['nombre'] = $nombre;
                 $_SESSION['correo'] = $correo;
                 $_SESSION['foto'] = $ruta_foto;
+
+                // 🌟 CORREGIDO: Usamos la instancia '$usuarioModel'
+                $usuarioModel->registrarActividad('Perfiles', "El usuario/refugio " . $nombre . " actualizó sus datos.", 'Actualizado');
 
                 echo "<script>
                     alert('¡Perfil actualizado con éxito! 🐾');

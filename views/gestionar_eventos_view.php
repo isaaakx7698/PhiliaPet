@@ -150,6 +150,7 @@ if (!isset($_SESSION['rol']) || ($_SESSION['rol'] !== 'refugio' && $_SESSION['ro
                     <option value="Vacunación">💉 Campaña de Vacunación</option>
                     <option value="Esterilización">🐱 Jornada de Esterilización</option>
                     <option value="Donación">🎁 Donación y Suministros</option>
+                    <option value="Otro tipo de Evento">🎇Evento</option>
                 </select>
             </div>
 

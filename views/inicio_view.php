@@ -432,10 +432,9 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
 
             <a href="index.php?action=calendario" class="nav-link">📅 Calendario</a>
-            <a href="#donar" class="nav-link">🎁 Donar</a>
-
-            <!-- MENÚ DE USUARIO -->
-             
+            <a href="index.php?action=donar" class="nav-link">💕 Donar</a>
+<!-- MENÚ DE USUARIO -->
+            
         <?php if (isset($_SESSION['rol'])): ?>
         
             <div class="dropdown-usuario">
@@ -459,7 +458,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <?php if ($_SESSION['rol'] === 'adoptante'): ?>
                             <a href="index.php?action=perfil_adoptante">👤 Mi Perfil</a>
                         <?php elseif ($_SESSION['rol'] === 'refugio'): ?>
-                            <a href="index.php?action=fundaciones" class="nav-link">🏢 Fundaciones</a>
+                            <a href="index.php?action=perfil_adoptante">🏢 Mi Fundacion</a>
                         <?php elseif ($_SESSION['rol'] === 'admin'): ?>
                             <a href="index.php?action=panel_admin">🛡️ Panel Admin</a>
                             <a href="index.php?action=perfil_adoptante">👤 Mi Perfil</a>
@@ -477,7 +476,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <?php endif; ?>
 
             <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'refugio'): ?>
-                <a href="index.php?action=mascotas" class="nav-link" style="background: #ffb7b2; color: #fff; font-weight: bold;">
+                <a href="index.php?action=mascotas" class="nav-link" style="background: #70127cd3; color: #fff; font-weight: bold;">
                     🏡 Panel Refugio
                 </a>
             <?php endif; ?>
@@ -550,7 +549,6 @@ if (session_status() === PHP_SESSION_NONE) {
             <?php if (!empty($mascotas)): ?>
                 <?php foreach ($mascotas as $index => $m): ?>
                     <div class="tarjeta-peludito <?php echo ($index % 2 == 0) ? 'card-lavanda' : 'card-menta'; ?>">
-                        <span class="badge-adopcion"><?php echo htmlspecialchars($m['estado_salud']); ?> ✨</span>
                         
                         <div class="contenedor-foto" style="width: 100%; height: 220px; overflow: hidden; background: #f3e8ff; display: flex; align-items: center; justify-content: center; border-radius: 20px;">
                             <?php if (!empty($m['imagen'])): ?>
@@ -605,7 +603,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <!-- Ana María -->
                 <div class="miembro-equipo">
                     <div class="miembro-foto-container">
-                        <img src="assets/img/anamaria.jpg" alt="Ana María" onerror="this.onerror=null; this.parentElement.innerHTML='<span style=\'font-size:2rem;\'>👩‍💻</span>';">
+                        <img src="assets/img/anamaria.jpeg" alt="Ana María" onerror="this.onerror=null; this.parentElement.innerHTML='<span style=\'font-size:2rem;\'>👩‍💻</span>';">
                     </div>
                     <h3>Ana María</h3>
                     <span>Desarrolladora</span>
