@@ -225,7 +225,7 @@
                 🐾 ¿Prefieres donar alguno de estos elementos en físico?
             </p>
             <p style="margin: 0; font-size: 0.95rem; color: #9a3412;">
-                Escríbenos con confianza a nuestro correo institucional y coordinamos la entrega contigo: 
+                Escríbenos con confianza a nuestro correo y coordinamos la entrega contigo: 
                 <a href="mailto:PhiliaPet2026@gmail.com" style="color: #7e22ce; font-weight: bold; text-decoration: underline;">PhiliaPet2026@gmail.com</a> 💌
             </p>
         </div>

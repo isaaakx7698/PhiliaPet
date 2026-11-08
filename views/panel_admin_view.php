@@ -8,6 +8,29 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
     header("Location: index.php?action=inicio");
     exit();
 }
+
+// ==========================================
+// CONSULTA AUTOMÁTICA CON PDO PARA EL ÍTEM 5
+// ==========================================
+$actividades = [];
+try {
+    // Intentamos conectar por PDO (ajusta las variables si en tu proyecto se llaman diferente)
+    $host = 'localhost';
+    $dbname = 'philiapet_db';
+    $username = 'root';
+    $password = '';
+
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Traemos los registros ordenados del más reciente al más antiguo
+    $stmt = $pdo->query("SELECT * FROM actividad_log ORDER BY id DESC");
+    $actividades = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (Exception $e) {
+    // Si llegara a haber un error de conexión aquí, la tabla simplemente queda vacía sin romper la página
+    $actividades = [];
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -37,21 +60,22 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
 
         .btn-volver {
             display: inline-block;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
             color: #4f46e5;
             text-decoration: none;
             font-weight: bold;
+            font-size: 1.5rem;
             transition: color 0.2s;
         }
 
         .btn-volver:hover {
             text-decoration: underline;
-            color: #4338ca;
+            color: #322a8b;
         }
 
         /* ENCABEZADO */
         .admin-header {
-            background: linear-gradient(135deg, #4f46e5, #3b82f6);
+            background: linear-gradient(135deg, #332e94, #3270d3);
             color: white;
             padding: 30px;
             border-radius: 20px;
@@ -154,9 +178,6 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .btn-gestion-mascotas { background: #e0e7ff; color: #4338ca; }
-        .btn-catalogo { background: #d1fae5; color: #065f46; }
-        .btn-solicitudes { background: #fef3c7; color: #92400e; }
 
         /* TABLA DE ACTIVIDAD */
         .tabla-admin {
@@ -184,7 +205,41 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
         }
 
         .badge-verde { color: #10b981; }
-        .badge-azul { color: #3b82f6; }
+
+        /* BOTÓN SALVAVIDAS PARA EXPORTAR A PDF (ÍTEM 5) */
+        .btn-exportar-pdf {
+            background-color: #203aae;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-exportar-pdf:hover {
+            background-color: #052c4c;
+        }
+
+        /* Ocultar botones e inicio al imprimir para que salga limpio el PDF */
+        @media print {
+            .btn-volver, .acciones-wrapper, .btn-exportar-pdf, .stats-grid {
+                display: none !important;
+            }
+            body {
+                background-color: white;
+            }
+            .admin-seccion {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -214,18 +269,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
             </div>
         </div>
 
-        <!-- SECCIÓN DE ACCESOS Y GESTIÓN GLOBAL -->
-        <div class="admin-seccion">
-            <h2>⚙️ Acciones y Gestión Global</h2>
-            <p>Como administradora, puedes supervisar las secciones críticas de la red de apoyo:</p>
-            <div class="acciones-wrapper">
-                <a href="index.php?action=mascotas" class="btn-accion btn-gestion-mascotas">🐶 Gestionar / Editar Todas las Mascotas</a>
-                <a href="index.php?action=catalogo_adopcion" class="btn-accion btn-catalogo">👁️ Ver Catálogo Público</a>
-                <a href="index.php?action=unir_refugio" class="btn-accion btn-solicitudes">🏢 Solicitudes de Refugios</a>
-            </div>
-        </div>
-
-        <!-- SECCIÓN DE ACTIVIDAD RECIENTE -->
+        <!-- SECCIÓN DE ACTIVIDAD RECIENTE (INFORME / ÍTEM 5) -->
         <div class="admin-seccion">
             <h2>📊 Actividad Reciente en la Red de Bogotá</h2>
             <p>Monitoreo en tiempo real de los últimos movimientos registrados en el sistema:</p>
@@ -235,7 +279,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
                     <tr>
                         <th>Fecha / Hora</th>
                         <th>Módulo</th>
-                        <th>Descripción de la Actividad</th>
+                        <th>Descripción de la Activity</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
@@ -258,6 +302,11 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
                     <?php endif; ?>
                 </tbody>
             </table>
+
+            <!-- BOTÓN SALVAVIDAS PARA EL ÍTEM 5 (Genera y exporta el reporte en PDF) -->
+            <button onclick="window.print()" class="btn-exportar-pdf">
+                📥 Generar y Exportar Informe en PDF
+            </button>
         </div>
     </div>
 

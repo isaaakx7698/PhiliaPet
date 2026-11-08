@@ -121,72 +121,72 @@ class UsuarioController {
 
     // Procesa la actualización del perfil y la foto
     public function actualizarPerfil() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit();
+        }
 
-            if (!isset($_SESSION['usuario_id'])) {
-                header("Location: index.php?action=login");
-                exit();
-            }
+        $usuario_id = $_SESSION['usuario_id'];
+        $nombre = $_POST['nombre'] ?? '';
+        $correo = $_POST['correo'] ?? '';
+        $descripcion = $_POST['descripcion'] ?? '';
+        $localidad = $_POST['localidad'] ?? null;
+        $telefono = $_POST['telefono'] ?? null;
+        $instagram = $_POST['instagram'] ?? null;
+        $facebook = $_POST['facebook'] ?? null;
 
-            $usuario_id = $_SESSION['usuario_id'];
-            $nombre = trim($_POST['nombre']);
-            $correo = trim($_POST['correo']);
-            $descripcion = trim($_POST['descripcion'] ?? '');
+        // Recuperar la foto actual de la sesión por si no sube una nueva
+        $ruta_foto = $_SESSION['foto'] ?? '';
+
+        // Procesar la nueva imagen si se seleccionó una
+        if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+            $fileTmpPath = $_FILES['foto']['tmp_name'];
+            $fileName = $_FILES['foto']['name'];
+            $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
             
-            $localidad = trim($_POST['localidad'] ?? '');
-            $telefono = trim($_POST['telefono'] ?? '');
-            $instagram = trim($_POST['instagram'] ?? '');
-            $facebook = trim($_POST['facebook'] ?? '');
-            
-            $usuarioModel = new Usuario();
-            $usuarioActual = $usuarioModel->obtenerPorId($usuario_id);
-            
-            $ruta_foto = $usuarioActual['foto'] ?? $usuarioActual['imagen'] ?? $usuarioActual['foto_perfil'] ?? null;
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+            if (in_array($fileExtension, $allowedExtensions)) {
+                $uploadFileDir = 'assets/img/perfiles/';
+                if (!is_dir($uploadFileDir)) {
+                    mkdir($uploadFileDir, 0755, true);
+                }
+                
+                $newFileName = 'perfil_' . $usuario_id . '_' . time() . '.' . $fileExtension;
+                $dest_path = $uploadFileDir . $newFileName;
 
-            if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-                $ext = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
-                $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
-
-                if (in_array($ext, $extensionesPermitidas)) {
-                    $nombreArchivo = 'perfil_' . $usuario_id . '_' . time() . '.' . $ext;
-                    $directorioDestino = 'assets/img/perfiles/';
-
-                    if (!file_exists($directorioDestino)) {
-                        mkdir($directorioDestino, 0777, true);
-                    }
-
-                    $rutaCompleta = $directorioDestino . $nombreArchivo;
-
-                    if (move_uploaded_file($_FILES['foto']['tmp_name'], $rutaCompleta)) {
-                        $ruta_foto = $rutaCompleta;
-                    }
+                if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                    $ruta_foto = $dest_path;
                 }
             }
+        }
 
-            $exito = $usuarioModel->actualizarPerfilCompleto($usuario_id, $nombre, $correo, $descripcion, $localidad, $telefono, $instagram, $facebook, $ruta_foto);
+        require_once 'models/Usuario.php';
+        $usuarioModel = new Usuario();
+        
+        $exito = $usuarioModel->actualizarPerfilCompleto($usuario_id, $nombre, $correo, $descripcion, $localidad, $telefono, $instagram, $facebook, $ruta_foto);
 
-            if ($exito) {
-                $_SESSION['nombre'] = $nombre;
-                $_SESSION['correo'] = $correo;
-                $_SESSION['foto'] = $ruta_foto;
+        if ($exito) {
+            $_SESSION['nombre'] = $nombre;
+            $_SESSION['correo'] = $correo;
+            $_SESSION['foto'] = $ruta_foto;
 
-                // 🌟 CORREGIDO: Usamos la instancia '$usuarioModel'
-                $usuarioModel->registrarActividad('Perfiles', "El usuario/refugio " . $nombre . " actualizó sus datos.", 'Actualizado');
+            $usuarioModel->registrarActividad('Perfiles', "El usuario " . $nombre . " actualizó su perfil completo.", 'Actualizado');
 
-                echo "<script>
-                    alert('¡Perfil actualizado con éxito! 🐾');
-                    window.location.href = 'index.php?action=inicio';
-                </script>";
-                exit();
-            } else {
-                echo "<script>
-                    alert('No se pudieron guardar los cambios en la base de datos.');
-                    window.history.back();
-                </script>";
-            }
+            echo "<script>
+                alert('¡Perfil actualizado con éxito! 🐾');
+                window.location.href = 'index.php?action=perfil_adoptante';
+            </script>";
+            exit();
+        } else {
+            echo "<script>
+                alert('No se pudieron guardar los cambios en la base de datos.');
+                window.history.back();
+            </script>";
+            exit();
         }
     }
 }

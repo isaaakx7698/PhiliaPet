@@ -80,5 +80,15 @@ class Usuario {
             error_log("Error al registrar actividad: " . $e->getMessage());
         }
     }
+        public function actualizarPerfilCompleto($id, $nombre, $correo, $descripcion, $localidad, $telefono, $instagram, $facebook, $ruta_foto) {
+    try {
+        $sql = "UPDATE usuarios SET nombre = ?, correo = ?, descripcion = ?, localidad = ?, telefono = ?, instagram = ?, facebook = ?, foto = ? WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$nombre, $correo, $descripcion, $localidad, $telefono, $instagram, $facebook, $ruta_foto, $id]);
+    } catch (PDOException $e) {
+        // En producción puedes registrar el error, aquí aseguramos el retorno falso si falla
+        return false;
+    }
+}
 }
 ?>
