@@ -182,6 +182,14 @@ if (!isset($_SESSION['rol']) || ($_SESSION['rol'] !== 'refugio' && $_SESSION['ro
                 <label>Historia / Descripción breve:</label>
                 <textarea name="historia" class="form-control" style="height:70px;" required placeholder="Cuenta un poco sobre su historia..."></textarea>
             </div>
+                        <div class="form-group">
+                <label>🏢Fundación:</label>
+                <select name="fundacion" class="form-control" required>
+                    <option value="fundacion_1">Patitas felices</option>
+                    <option value="fundacion_2">Huellitas de Amor</option>
+                    <option value="fundacion_3"></option>
+                </select>
+            </div>
 
             <button type="submit" class="btn-guardar">Guardar Peludito ✨</button>
         </form>

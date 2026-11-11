@@ -57,13 +57,13 @@
                     <p style="color: #6b7280; font-size: 0.95em; margin-bottom: 15px;">¿Tienes dudas sobre el proceso o requisitos de adopción? Comunícate directamente con el refugio asignado:</p>
                     
                     <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                        <a href="https://wa.me/573000000000?text=Hola,%20estoy%20interesado%20en%20adoptar%20a%20<?php echo urlencode($peludito['nombre']); ?>" target="_blank" 
+                        <a href="https://wa.me/573224585562?text=Estoy%20interesado%20en%20adoptar%20a%20<?php echo urlencode($peludito['nombre']); ?>,%20que%20requisitos%20piden?" target="_blank" 
                            style="background: #25d366; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
-                           💬 Contactar por WhatsApp
+                            💬 Contactar por WhatsApp
                         </a>
-                        <a href="mailto:fundacion@philiapet.com?subject=Interés%20en%20adopción%20de%20<?php echo urlencode($peludito['nombre']); ?>" 
-                           style="background: #4f46e5; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
-                           ✉️ Enviar Correo
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=philiapet@gmail.com&su=Interés%20en%20adopción%20de%20<?php echo urlencode($peludito['nombre']); ?>&body=Estoy%20interesado%20en%20adoptar%20a%20<?php echo urlencode($peludito['nombre']); ?>,%20que%20requisitos%20piden?" target="_blank" 
+                        style="background: #4f46e5; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
+                            ✉️ Enviar Correo
                         </a>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                     <a href="index.php?action=procesar_adopcion&id=<?php echo $peludito['id_mascota']; ?>" 
                        onclick="return confirm('¿Estás seguro de completar la adopción de <?php echo htmlspecialchars($peludito['nombre']); ?>? Pasará a estado adoptado y se cerrará su proceso.');"
                        style="display: inline-block; background: #10b981; color: white; padding: 14px 30px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 1.1em; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">
-                       🏠 ¡Confirmar Adopción de <?php echo htmlspecialchars($peludito['nombre']); ?>!
+                        🏠 ¡Confirmar Adopción de <?php echo htmlspecialchars($peludito['nombre']); ?>!
                     </a>
                 </div>
 

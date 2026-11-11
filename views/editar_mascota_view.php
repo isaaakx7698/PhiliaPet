@@ -142,7 +142,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'refugio') {
                 <label>Estado de Adopción:</label>
                 <select name="estado_adopcion" class="form-control">
                     <option value="disponible" <?php echo ($peludito['estado_adopcion'] === 'disponible') ? 'selected' : ''; ?>>Disponible</option>
-                    <option value="adoptado" <?php echo ($peludito['estado_adopcion'] === 'adoptado') ? 'selected' : ''; ?>>Adoptado</option>
+                    <option value="adoptado" <?php echo ($peludito['estado_adopcion'] === 'proceso') ? 'selected' : ''; ?>>En proceso de adopcion</option>
                 </select>
             </div>
 
@@ -160,7 +160,6 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'refugio') {
                 <label>Historia / Descripción breve:</label>
                 <textarea name="historia" class="form-control" style="height:80px;" required><?php echo htmlspecialchars($peludito['historia']); ?></textarea>
             </div>
-
             <button type="submit" class="btn-guardar">Actualizar Peludito ✨</button>
         </form>
     </div>
