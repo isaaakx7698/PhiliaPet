@@ -56,6 +56,17 @@ switch ($action) {
         $controller = new UsuarioController();
         $controller->mostrarPerfil();
         break;
+    
+    case 'perfil_refugio':
+        session_start();
+        if (!isset($_SESSION['rol'])) {
+            header("Location: index.php?action=login");
+            exit();
+        }
+        require_once 'controllers/UsuarioController.php';
+        $controller = new UsuarioController();
+        $controller->mostrarPerfilRefugio(); // O la función que carga el perfil de la fundación
+        break;
 
     case 'panel_admin':
         session_start();
@@ -205,6 +216,24 @@ switch ($action) {
         require_once 'controllers/MascotaController.php';
         $controller = new MascotaController();
         $controller->listarInicio();
+        break;
+
+    // RUTA DE PERFIL DE REFUGIO (NUEVA)
+    case 'perfil_refugio':
+        session_start();
+        if (!isset($_SESSION['rol']) || ($_SESSION['rol'] !== 'refugio' && $_SESSION['rol'] !== 'admin')) {
+            header("Location: index.php?action=login");
+            exit();
+        }
+        require_once 'controllers/UsuarioController.php'; // O el controlador donde tengas la función de ver el perfil
+        $controller = new UsuarioController();
+        $controller->mostrarPerfilRefugio(); // Asegúrate de que este método traiga los datos de la fundación
+        break;
+
+    case 'actualizar_perfil_refugio':
+        require_once 'controllers/UsuarioController.php';
+        $controller = new UsuarioController();
+        $controller->actualizarPerfilRefugio(); // Método para hacer el UPDATE en la tabla fundaciones
         break;
 }
 ?>

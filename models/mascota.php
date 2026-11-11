@@ -72,11 +72,14 @@ class Mascota {
         return $stmt->execute();
     }
 
-    public function obtenerPorId($id_mascota) {
-        $query = "SELECT * FROM " . $this->table_name . " WHERE id_mascota = :id_mascota LIMIT 0,1";
+    public function obtenerPorId($id) {
+        $query = "SELECT mascotas.*, fundaciones.nombre AS nombre_fundacion, fundaciones.telefono, fundaciones.correo 
+                  FROM mascotas 
+                  LEFT JOIN fundaciones ON mascotas.id_fundacion = fundaciones.id_fundacion 
+                  WHERE mascotas.id_mascota = ?";
+        
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id_mascota", $id_mascota);
-        $stmt->execute();
+        $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 

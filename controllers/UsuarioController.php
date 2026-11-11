@@ -118,6 +118,29 @@ class UsuarioController {
 
         require_once 'views/perfil_adoptante_view.php';
     }
+    // Muestra la vista del perfil de la fundación
+    public function mostrarPerfilRefugio() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: index.php?action=login");
+            exit();
+        }
+
+        $usuarioModel = new Usuario();
+        $usuario = $usuarioModel->obtenerPorId($_SESSION['usuario_id']);
+
+        if ($usuario) {
+            $_SESSION['foto'] = $usuario['foto'] ?? $usuario['imagen'] ?? $usuario['foto_perfil'] ?? '';
+            $_SESSION['nombre'] = $usuario['nombre'] ?? '';
+            $_SESSION['correo'] = $usuario['correo'] ?? '';
+        }
+
+        // Aquí cargamos tu vista de perfil de refugio
+        require_once 'views/perfil_refugio.php';
+    }
 
     // Procesa la actualización del perfil y la foto
     public function actualizarPerfil() {

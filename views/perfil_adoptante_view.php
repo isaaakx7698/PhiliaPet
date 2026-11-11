@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Perfil - PhiliaPet 🐾</title>
+    <title>Mi Perfil de Adoptante - PhiliaPet 🐾</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -211,22 +211,12 @@ if (session_status() === PHP_SESSION_NONE) {
         .btn-volver:hover {
             text-decoration: underline;
         }
-
-        .seccion-refugio {
-            background: #fdf4ff;
-            border: 2px dashed #d8b4fe;
-            padding: 15px;
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
     </style>
 </head>
 <body>
 
     <div class="contenedor-principal">
-        <!-- ENCABEZADO Y FOTO DE PERFIL CON VISTA PREVIA -->
+        <!-- FORMULARIO DE PERFIL DE ADOPTANTE -->
         <form action="index.php?action=actualizar_perfil" method="POST" enctype="multipart/form-data">
             
             <div class="perfil-header">
@@ -240,26 +230,19 @@ if (session_status() === PHP_SESSION_NONE) {
                         <?php endif; ?>
                     </div>
 
-                    <!-- BOTÓN ETIQUETA QUE ACTIVA EL CAMPO DE ARCHIVO OCULTO -->
                     <label for="foto" class="btn-cambiar-foto">
-                        📷 <?php echo (isset($_SESSION['rol']) && $_SESSION['rol'] === 'refugio') ? 'Cambiar Logo' : 'Cambiar foto'; ?>
+                        📷 Cambiar foto
                     </label>
                     <input type="file" name="foto" id="foto" accept="image/*">
                 </div>
 
-                <h2>
-                    <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'refugio'): ?>
-                        Mi Perfil de Refugio 🏢
-                    <?php else: ?>
-                        Mi Perfil de Adoptante 🐾
-                    <?php endif; ?>
-                </h2>
-                <p>Información personal, foto y descripción en la plataforma</p>
+                <h2>Mi Perfil de Adoptante 🐾</h2>
+                <p>Tu información personal y biografía dentro de la plataforma</p>
             </div>
 
-            <!-- CAMPOS COMUNES -->
+            <!-- CAMPOS DEL ADOPTANTE -->
             <div class="form-group">
-                <label for="nombre"><?php echo (isset($_SESSION['rol']) && $_SESSION['rol'] === 'refugio') ? 'Nombre de la Fundación:' : 'Nombre Completo:'; ?></label>
+                <label for="nombre">Nombre Completo:</label>
                 <input type="text" name="nombre" id="nombre" value="<?php echo htmlspecialchars($usuario['nombre'] ?? ''); ?>" required>
             </div>
 
@@ -268,46 +251,13 @@ if (session_status() === PHP_SESSION_NONE) {
                 <input type="email" name="correo" id="correo" value="<?php echo htmlspecialchars($usuario['correo'] ?? ''); ?>" required>
             </div>
 
-            <!-- CAMPOS EXCLUSIVOS SI ES REFUGIO (Para alimentar las tarjetas públicas de Fundaciones) -->
-            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'refugio'): ?>
-                <div class="seccion-refugio">
-                    <h4 style="color: #7e22ce; font-size: 0.9rem; margin-bottom: 2px;">📍 Datos públicos para la sección de Fundaciones</h4>
-                    
-                    <div class="form-group">
-                        <label for="localidad">Localidad (ej. Suba, Engativá, Kennedy):</label>
-                        <input type="text" name="localidad" id="localidad" value="<?php echo htmlspecialchars($usuario['localidad'] ?? ''); ?>" placeholder="Ej. Suba">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="telefono">Teléfono de Contacto:</label>
-                        <input type="text" name="telefono" id="telefono" value="<?php echo htmlspecialchars($usuario['telefono'] ?? ''); ?>" placeholder="Ej. 300 123 4567">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="instagram">Instagram (ej. @patitasfelices):</label>
-                        <input type="text" name="instagram" id="instagram" value="<?php echo htmlspecialchars($usuario['instagram'] ?? ''); ?>" placeholder="@usuario">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="facebook">Facebook (ej. Patitas Felices):</label>
-                        <input type="text" name="facebook" id="facebook" value="<?php echo htmlspecialchars($usuario['facebook'] ?? ''); ?>" placeholder="Nombre en Facebook">
-                    </div>
-                </div>
-            <?php endif; ?>
-
             <div class="form-group">
-                <label>
-                    <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'refugio'): ?>
-                        DESCRIPCIÓN / SLOGAN DE LA FUNDACIÓN:
-                    <?php else: ?>
-                        DESCRIPCIÓN / BIOGRAFÍA PERSONAL:
-                    <?php endif; ?>
-                </label>
-                <textarea name="descripcion" id="descripcion" placeholder="Cuéntanos un poco sobre ti o sobre el refugio..."><?php echo htmlspecialchars($usuario['descripcion'] ?? ''); ?></textarea>
+                <label for="descripcion">Biografía o Descripción Personal:</label>
+                <textarea name="descripcion" id="descripcion" placeholder="Cuéntanos un poco sobre ti y tu hogar..."><?php echo htmlspecialchars($usuario['descripcion'] ?? ''); ?></textarea>
             </div>
 
             <div class="badge-estado">
-                🐾 Estado del perfil: <?php echo ucfirst($_SESSION['rol'] ?? 'Adoptante'); ?> Verificado Activo.
+                🐾 Estado del perfil: Adoptante Verificado Activo.
             </div>
 
             <button type="submit" class="btn-guardar">Guardar Cambios 💾</button>

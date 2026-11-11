@@ -458,7 +458,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <?php if ($_SESSION['rol'] === 'adoptante'): ?>
                             <a href="index.php?action=perfil_adoptante">👤 Mi Perfil</a>
                         <?php elseif ($_SESSION['rol'] === 'refugio'): ?>
-                            <a href="index.php?action=perfil_adoptante">🏢 Mi Fundacion</a>
+                            <a href="index.php?action=perfil_refugio">🏢 Mi Fundacion</a>
                         <?php elseif ($_SESSION['rol'] === 'admin'): ?>
                             <a href="index.php?action=panel_admin">🛡️ Panel Admin</a>
                             <a href="index.php?action=perfil_adoptante">👤 Mi Perfil</a>

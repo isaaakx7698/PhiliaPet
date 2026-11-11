@@ -56,25 +56,29 @@
                     <h3 style="color: #6b21a8; margin-top: 0; margin-bottom: 10px;">🏢 Puente de Contacto con la Fundación</h3>
                     <p style="color: #6b7280; font-size: 0.95em; margin-bottom: 15px;">¿Tienes dudas sobre el proceso o requisitos de adopción? Comunícate directamente con el refugio asignado:</p>
                     
-                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                        <a href="https://wa.me/573224585562?text=Estoy%20interesado%20en%20adoptar%20a%20<?php echo urlencode($peludito['nombre']); ?>,%20que%20requisitos%20piden?" target="_blank" 
-                           style="background: #25d366; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
+                    <!-- WhatsApp dinámico de la fundación corregido -->
+                        <?php 
+                            // Limpiamos cualquier carácter raro del número de la base de datos
+                            $telBD = preg_replace('/[^0-9]/', '', $peludito['telefono'] ?? '57 3224585562');
+                            
+                            // Si el número guardado en la BD no tiene el 57 adelante, se lo agregamos de forma segura
+                            if (substr($telBD, 0, 2) !== '57') {
+                                $telefonoFinal = '57' . $telBD;
+                            } else {
+                                $telefonoFinal = $telBD;
+                            }
+
+                            $mensajeWhatsApp = "Estoy interesado en adoptar a " . $peludito['nombre'] . ", qué requisitos piden?";
+                        ?>
+                        <a href="https://api.whatsapp.com/send?phone=<?php echo $telefonoFinal; ?>&text=<?php echo urlencode($mensajeWhatsApp); ?>" target="_blank" 
+                        style="background: #25d366; color: white; padding: 12px 22px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
                             💬 Contactar por WhatsApp
                         </a>
-                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=philiapet@gmail.com&su=Interés%20en%20adopción%20de%20<?php echo urlencode($peludito['nombre']); ?>&body=Estoy%20interesado%20en%20adoptar%20a%20<?php echo urlencode($peludito['nombre']); ?>,%20que%20requisitos%20piden?" target="_blank" 
-                        style="background: #4f46e5; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
+                        <!-- Correo dinámico de la fundación -->
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<?php echo htmlspecialchars($peludito['correo'] ?? 'philiapet@gmail.com'); ?>&su=Interés%20en%20adopción%20de%20<?php echo urlencode($peludito['nombre']); ?>&body=Estoy%20interesado%20en%20adoptar%20a%20<?php echo urlencode($peludito['nombre']); ?>,%20qué%20requisitos%20piden?" target="_blank"
+                        style="background: #4f46e5; color: white; padding: 12px 22px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
                             ✉️ Enviar Correo
                         </a>
-                    </div>
-                </div>
-
-                <!-- Botón para confirmar adopción -->
-                <div style="text-align: center; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-                    <a href="index.php?action=procesar_adopcion&id=<?php echo $peludito['id_mascota']; ?>" 
-                       onclick="return confirm('¿Estás seguro de completar la adopción de <?php echo htmlspecialchars($peludito['nombre']); ?>? Pasará a estado adoptado y se cerrará su proceso.');"
-                       style="display: inline-block; background: #10b981; color: white; padding: 14px 30px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 1.1em; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">
-                        🏠 ¡Confirmar Adopción de <?php echo htmlspecialchars($peludito['nombre']); ?>!
-                    </a>
                 </div>
 
             </div>
