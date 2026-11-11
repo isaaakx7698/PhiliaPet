@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-11-2026 a las 23:00:29
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Tiempo de generación: 11-11-2026 a las 17:37:17
+-- Versión del servidor: 10.1.38-MariaDB
+-- Versión de PHP: 7.1.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -29,11 +30,11 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `actividad_log` (
   `id` int(11) NOT NULL,
-  `fecha` timestamp NOT NULL DEFAULT current_timestamp(),
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modulo` varchar(50) NOT NULL,
   `descripcion` text NOT NULL,
   `estado` varchar(50) DEFAULT 'Verificado'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `actividad_log`
@@ -42,7 +43,12 @@ CREATE TABLE `actividad_log` (
 INSERT INTO `actividad_log` (`id`, `fecha`, `modulo`, `descripcion`, `estado`) VALUES
 (1, '2026-11-07 21:35:22', 'Usuarios', 'Nuevo usuario registrado: beto', 'Verificado'),
 (2, '2026-11-07 21:35:49', 'Seguridad', 'Inicio de sesión de: beto (adoptante)', 'Verificado'),
-(3, '2026-11-07 21:36:36', 'Seguridad', 'Inicio de sesión de: Administrador General (admin)', 'Verificado');
+(3, '2026-11-07 21:36:36', 'Seguridad', 'Inicio de sesión de: Administrador General (admin)', 'Verificado'),
+(4, '2026-11-11 13:48:51', 'Seguridad', 'Inicio de sesión de: Fundacion patitas felices (refugio)', 'Verificado'),
+(5, '2026-11-11 14:16:47', 'Seguridad', 'Inicio de sesión de: Fundacion patitas felices (refugio)', 'Verificado'),
+(6, '2026-11-11 15:34:30', 'Usuarios', 'Nuevo usuario registrado: Isamar', 'Verificado'),
+(7, '2026-11-11 15:34:39', 'Seguridad', 'Inicio de sesión de: Isamar (adoptante)', 'Verificado'),
+(8, '2026-11-11 16:02:01', 'Seguridad', 'Inicio de sesión de: Fundacion patitas felices (refugio)', 'Verificado');
 
 -- --------------------------------------------------------
 
@@ -52,15 +58,15 @@ INSERT INTO `actividad_log` (`id`, `fecha`, `modulo`, `descripcion`, `estado`) V
 
 CREATE TABLE `eventos` (
   `id_evento` int(11) NOT NULL,
-  `titulo` varchar(150) NOT NULL,
-  `descripcion` text DEFAULT NULL,
+  `titulo` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` text COLLATE utf8mb4_unicode_ci,
   `fecha_evento` date NOT NULL,
   `hora_evento` time NOT NULL,
-  `lugar` varchar(150) NOT NULL,
-  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp(),
-  `tipo_evento` varchar(100) DEFAULT NULL,
-  `fecha_hora` varchar(150) DEFAULT NULL,
-  `fundacion` varchar(150) DEFAULT NULL
+  `lugar` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tipo_evento` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fecha_hora` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fundacion` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -100,15 +106,15 @@ INSERT INTO `eventos_fundaciones` (`id_evento`, `id_fundacion`) VALUES
 
 CREATE TABLE `fundaciones` (
   `id_fundacion` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `representante` varchar(100) DEFAULT NULL,
-  `telefono` varchar(20) NOT NULL,
-  `correo` varchar(100) DEFAULT NULL,
-  `direccion` varchar(150) DEFAULT NULL,
-  `url_redes_sociales` varchar(255) DEFAULT NULL,
-  `qr_nequi_ruta` varchar(255) DEFAULT NULL,
-  `estado_verificacion` enum('pendiente','verificado','rechazado') DEFAULT 'pendiente',
-  `fecha_registro` timestamp NOT NULL DEFAULT current_timestamp()
+  `nombre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `representante` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `telefono` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `correo` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `direccion` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `url_redes_sociales` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `qr_nequi_ruta` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `estado_verificacion` enum('pendiente','verificado','rechazado') COLLATE utf8mb4_unicode_ci DEFAULT 'pendiente',
+  `fecha_registro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -116,8 +122,8 @@ CREATE TABLE `fundaciones` (
 --
 
 INSERT INTO `fundaciones` (`id_fundacion`, `nombre`, `representante`, `telefono`, `correo`, `direccion`, `url_redes_sociales`, `qr_nequi_ruta`, `estado_verificacion`, `fecha_registro`) VALUES
-(1, 'Fundación Huellas de Amor', 'Adriana Rondón', '3115551234', 'contacto@huellasdeamor.org', 'Calle 45 # 22-10, Bogotá', 'https://instagram.com/huellasdeamorbog', NULL, 'verificado', '2026-06-10 16:18:53'),
-(2, 'Patitas Bogotanas', 'Carlos Mendoza', '3204445678', 'info@patitasbogotanas.com', 'Carrera 7 # 72-40, Bogotá', 'https://instagram.com/patitasbogotanas', NULL, 'verificado', '2026-06-10 16:18:53');
+(1, 'Fundación Huellas de Amor', 'Adriana Rondón', '3152945802', 'contacto@huellasdeamor.org', 'Calle 45 # 22-10, Bogotá', 'https://instagram.com/huellasdeamorbog', NULL, 'verificado', '2026-06-10 16:18:53'),
+(2, 'Patitas Bogotanas', 'Carlos Mendoza', '3224585562', 'info@patitasbogotanas.com', 'Carrera 7 # 72-40, Bogotá', 'https://instagram.com/patitasbogotanas', NULL, 'verificado', '2026-06-10 16:18:53');
 
 -- --------------------------------------------------------
 
@@ -128,12 +134,12 @@ INSERT INTO `fundaciones` (`id_fundacion`, `nombre`, `representante`, `telefono`
 CREATE TABLE `interesados_adopcion` (
   `id_interesado` int(11) NOT NULL,
   `id_mascota` int(11) NOT NULL,
-  `nombre_completo` varchar(100) NOT NULL,
-  `telefono` varchar(20) NOT NULL,
-  `correo` varchar(100) NOT NULL,
-  `mensaje_motivo` text DEFAULT NULL,
-  `estado_solicitud` enum('enviada','en_revision','aprobada','archivada') DEFAULT 'enviada',
-  `fecha_solicitud` timestamp NOT NULL DEFAULT current_timestamp()
+  `nombre_completo` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telefono` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `correo` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mensaje_motivo` text COLLATE utf8mb4_unicode_ci,
+  `estado_solicitud` enum('enviada','en_revision','aprobada','archivada') COLLATE utf8mb4_unicode_ci DEFAULT 'enviada',
+  `fecha_solicitud` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -144,13 +150,13 @@ CREATE TABLE `interesados_adopcion` (
 
 CREATE TABLE `jornadas_eventos` (
   `id_evento` int(11) NOT NULL,
-  `titulo_evento` varchar(150) NOT NULL,
-  `tipo_evento` enum('vacunacion','adopcion_centro_comercial','recolecta','otro') NOT NULL,
-  `descripcion_evento` text DEFAULT NULL,
+  `titulo_evento` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo_evento` enum('vacunacion','adopcion_centro_comercial','recolecta','otro') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion_evento` text COLLATE utf8mb4_unicode_ci,
   `fecha_programada` date NOT NULL,
   `hora_programada` time NOT NULL,
-  `lugar_encuentro` varchar(150) NOT NULL,
-  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp()
+  `lugar_encuentro` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -162,15 +168,15 @@ CREATE TABLE `jornadas_eventos` (
 CREATE TABLE `mascotas` (
   `id_mascota` int(11) NOT NULL,
   `id_fundacion` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `especie` enum('perro','gato') NOT NULL,
-  `edad_aproximada` varchar(30) NOT NULL,
-  `historia` text DEFAULT NULL,
-  `estado_salud` varchar(255) DEFAULT 'Sano y listo para adoptar',
-  `foto_ruta` varchar(255) DEFAULT NULL,
-  `estado_adopcion` enum('disponible','en_proceso','adoptado') DEFAULT 'disponible',
-  `imagen` text DEFAULT NULL,
-  `fecha_ingreso` timestamp NOT NULL DEFAULT current_timestamp()
+  `nombre` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `especie` enum('perro','gato') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `edad_aproximada` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `historia` text COLLATE utf8mb4_unicode_ci,
+  `estado_salud` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'Sano y listo para adoptar',
+  `foto_ruta` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `estado_adopcion` enum('disponible','en_proceso','adoptado') COLLATE utf8mb4_unicode_ci DEFAULT 'disponible',
+  `imagen` text COLLATE utf8mb4_unicode_ci,
+  `fecha_ingreso` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -178,10 +184,12 @@ CREATE TABLE `mascotas` (
 --
 
 INSERT INTO `mascotas` (`id_mascota`, `id_fundacion`, `nombre`, `especie`, `edad_aproximada`, `historia`, `estado_salud`, `foto_ruta`, `estado_adopcion`, `imagen`, `fecha_ingreso`) VALUES
-(7, 1, 'Nieve', 'perro', 'joven (4 años)', 'Estaba abandonada, es juguetona, muy cariñosa y tiene aproximadamente 4 años ', 'Esterilizada, sana  ', NULL, 'disponible', 'assets/img/mascota_1793574142_422.jpg', '2026-11-01 23:02:22'),
-(8, 1, 'Beto', 'perro', 'adulto (9 años)', 'Es flojo, tranquilo odioso con las personas y tiene 9 años', 'Castrado,  fotosensible', NULL, 'disponible', 'assets/img/mascota_1793574945_289.jpg', '2026-11-01 23:15:45'),
-(9, 1, 'Chimuelo ', 'perro', 'cachorro (12 dias)', 'Su madre murio despues de dar a luz y tiene aproximadamente 2 semanas', 'No tiene todas las vacunas al dia', NULL, 'disponible', 'assets/img/mascota_1793577315_513.jpg', '2026-11-01 23:26:42'),
-(10, 1, 'Milo', 'gato', 'cachorro (cachorro (7 meses))', 'Estaba debajo de un puente abandonado, en una bolsa de basura ', 'Le falta la pata derecha inferior, sin novedades mayores vacunas al dia ', NULL, 'disponible', 'assets/img/mascota_1793578141_108.jpg', '2026-11-02 00:09:01');
+(11, 2, 'Gris', 'gato', 'joven (3 años)', 'no se se perdió', 'muy sano, con todas las vacunas, castrado ', NULL, 'disponible', 'assets/img/mascota_1794410361_564.jpg', '2026-11-11 14:00:20'),
+(12, 2, 'Nieve', 'perro', 'joven (4 años)', 'la encontramos amarrada a un poste y la rescatamos', 'Esterilizada, sana  ', NULL, 'disponible', 'assets/img/mascota_1794410370_736.jpg', '2026-11-11 14:02:52'),
+(13, 2, 'Beto', 'perro', 'adulto (9 años)', 'su familia lo dejo en nuestra fundación por la edad', 'gud', NULL, 'disponible', 'assets/img/mascota_1794410381_786.jpg', '2026-11-11 14:07:26'),
+(14, 2, 'Firulais', 'perro', 'cachorro (7 meses)', 'su madre perruna murió y estaba en una carretera', 'le faltan vacunas', NULL, 'disponible', 'assets/img/mascota_1794410391_694.jpg', '2026-11-11 14:09:15'),
+(15, 2, 'Darwin', 'gato', 'cachorro (7 meses)', 'Llego solito a nosotros un día lluvioso', 'le faltan vacunas', NULL, 'disponible', 'assets/img/mascota_1794410404_134.jpg', '2026-11-11 14:12:33'),
+(16, 2, 'Wilson', 'gato', 'adulto (10 años)', 'su familia ya no lo quiso y lo dejo en nuestra puerta', 'Sordo', NULL, 'disponible', 'assets/img/mascota_1794410415_382.jpg', '2026-11-11 14:15:45');
 
 -- --------------------------------------------------------
 
@@ -203,10 +211,10 @@ CREATE TABLE `participacion_eventos` (
 CREATE TABLE `registro_donaciones` (
   `id_donacion` int(11) NOT NULL,
   `id_fundacion` int(11) NOT NULL,
-  `tipo_aporte` enum('dinero','alimento','cobijas','otro') NOT NULL,
-  `detalle_donacion` text DEFAULT NULL,
-  `nombre_donante` varchar(100) DEFAULT 'Anónimo',
-  `fecha_donacion` timestamp NOT NULL DEFAULT current_timestamp()
+  `tipo_aporte` enum('dinero','alimento','cobijas','otro') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `detalle_donacion` text COLLATE utf8mb4_unicode_ci,
+  `nombre_donante` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'Anónimo',
+  `fecha_donacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -218,11 +226,11 @@ CREATE TABLE `registro_donaciones` (
 CREATE TABLE `solicitudes_contacto` (
   `id_solicitud` int(11) NOT NULL,
   `id_mascota` int(11) NOT NULL,
-  `nombre_interesado` varchar(100) NOT NULL,
-  `telefono_interesado` varchar(20) NOT NULL,
-  `correo_interesado` varchar(100) DEFAULT NULL,
-  `mensaje_contacto` text DEFAULT NULL,
-  `fecha_envio` timestamp NOT NULL DEFAULT current_timestamp()
+  `nombre_interesado` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telefono_interesado` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `correo_interesado` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mensaje_contacto` text COLLATE utf8mb4_unicode_ci,
+  `fecha_envio` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -237,10 +245,10 @@ CREATE TABLE `usuarios` (
   `correo` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `rol` enum('adoptante','refugio','admin') DEFAULT 'adoptante',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `descripcion` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `descripcion` text,
   `foto` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `usuarios`
@@ -250,10 +258,10 @@ INSERT INTO `usuarios` (`id`, `nombre`, `correo`, `password`, `rol`, `created_at
 (1, 'Refugio Central Bogotá', 'refugio@philiapet.com', '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', 'refugio', '2026-09-23 15:39:25', NULL, NULL),
 (2, 'Administrador General', 'A.I.S.ADMINS@yahoo.com', '$2y$10$IZpYfeO/eXItNaQwpASCs.YbGkmHOfEhtybIMAdOLoJqaE.M1iHFC', 'admin', '2026-09-23 15:51:59', NULL, NULL),
 (6, 'isamar', 'isarrrr@gmail.com', '$2y$10$23sa/MX6G/kgf4/W.83omOPTJR6k1bIgABHLkzS2Nbb2cntvH1.ym', 'adoptante', '2026-09-28 13:35:20', NULL, NULL),
-(8, 'Nieve Carvajal', 'isar88022@gmail.com', '$2y$10$IZpYfeO/eXItNaQwpASCs.YbGkmHOfEhtybIMAdOLoJqaE.M1iHFC', 'adoptante', '2026-11-01 20:39:10', '', 'assets/img/perfiles/perfil_8_1793566548.jpeg'),
 (9, 'Fundacion patitas felices', 'patitasfelices@gmail.com', '$2y$10$SBqmu4Vgf8Qf8oih8fBNYeRHb42.xsdSCl4ukgjTqSm3XicC3nGTC', 'refugio', '2026-11-01 21:00:16', NULL, NULL),
 (11, 'mariea', 'marie.lapro2@gmail.com', '$2y$10$OXv/tfaqAZf7R2YygmS8.eweCvobFvUXm3ULy9PjViO/uc8Vn3c.i', 'adoptante', '2026-11-07 21:26:44', NULL, NULL),
-(12, 'beto', 'betoelmaspro@gmail.com', '$2y$10$C6z8kehHBf2BLvZ9IAFMcu4Q4kzjZ6okl/AXK4N2QHmhlh5Eft.la', 'adoptante', '2026-11-07 21:35:22', NULL, NULL);
+(12, 'beto', 'betoelmaspro@gmail.com', '$2y$10$C6z8kehHBf2BLvZ9IAFMcu4Q4kzjZ6okl/AXK4N2QHmhlh5Eft.la', 'adoptante', '2026-11-07 21:35:22', NULL, NULL),
+(13, 'Isamar', 'isar88022@gmail.com', '$2y$10$/na72ChbXCpbq79RJVzog.AI1Lu.3/5dA/0ZvMQgVhMdi9C.tj/i2', 'adoptante', '2026-11-11 15:34:30', NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -341,7 +349,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `actividad_log`
 --
 ALTER TABLE `actividad_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `eventos`
@@ -371,7 +379,7 @@ ALTER TABLE `jornadas_eventos`
 -- AUTO_INCREMENT de la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
-  MODIFY `id_mascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_mascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `registro_donaciones`
@@ -389,7 +397,7 @@ ALTER TABLE `solicitudes_contacto`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Restricciones para tablas volcadas
